@@ -42,10 +42,10 @@ export default function ProductsPage() {
     <main className="pt-16">
       <section className="bg-card-dark border-b border-border py-16">
         <div className="max-w-screen-xl mx-auto px-6">
-          <p className="text-[10px] font-display font-semibold uppercase tracking-[0.4em] text-gold mb-4">
+          <p className="text-[10px] font-body font-bold uppercase tracking-[0.4em] text-accent mb-4">
             Collection
           </p>
-          <h1 className="font-display font-black uppercase text-5xl md:text-6xl tracking-tight text-foreground">
+          <h1 className="font-display font-black uppercase text-5xl md:text-6xl tracking-tighter text-foreground">
             All Products
           </h1>
         </div>
@@ -59,16 +59,16 @@ export default function ProductsPage() {
                 key={cat}
                 type="button"
                 onClick={() => handleCategoryChange(cat)}
-                className={`relative shrink-0 font-display font-semibold uppercase text-xs tracking-widest px-6 py-5 transition-colors ${
+                className={`relative shrink-0 font-body font-bold uppercase text-xs tracking-widest px-6 py-5 transition-colors ${
                   activeCategory === cat
-                    ? "text-gold"
+                    ? "text-accent"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
                 data-ocid="products.tab"
               >
                 {cat}
                 {activeCategory === cat && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold" />
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent" />
                 )}
               </button>
             ))}
@@ -92,7 +92,7 @@ export default function ProductsPage() {
           </div>
         ) : products && products.length > 0 ? (
           <>
-            <p className="text-xs font-display text-muted-foreground uppercase tracking-widest mb-8">
+            <p className="text-xs font-body text-muted-foreground uppercase tracking-widest mb-8">
               {products.length} {products.length === 1 ? "product" : "products"}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -107,7 +107,7 @@ export default function ProductsPage() {
           </>
         ) : (
           <div className="text-center py-32" data-ocid="products.empty_state">
-            <p className="font-display font-bold uppercase tracking-widest text-lg text-foreground mb-2">
+            <p className="font-display font-black uppercase tracking-widest text-lg text-foreground mb-2">
               No Products Found
             </p>
             <p className="text-sm text-muted-foreground">

@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Search, ShoppingCart, User, X } from "lucide-react";
+import { Menu, ShoppingCart, User, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
 
@@ -10,6 +10,13 @@ export default function Navbar() {
   const { login, clear, identity } = useInternetIdentity();
   const { location } = useRouterState();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const navLinks = [
     { label: "New Arrivals", category: undefined },
@@ -20,11 +27,16 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-surface border-b border-border">
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 bg-surface transition-all duration-300 ${
+        scrolled ? "border-b border-border" : "border-b border-transparent"
+      }`}
+    >
+      <div className="max-w-screen-xl mx-auto px-6 h-16 flex items-center justify-between">
+        {/* Logo — bold sans, all-caps */}
         <Link
           to="/"
-          className="font-display font-black text-2xl tracking-[0.15em] text-foreground hover:text-gold transition-colors"
+          className="font-display font-black text-xl tracking-tighter uppercase text-foreground hover:text-accent transition-colors"
           data-ocid="nav.link"
         >
           LUXE
@@ -39,9 +51,9 @@ export default function Navbar() {
               key={link.label}
               to="/products"
               search={{ category: link.category }}
-              className={`text-xs font-display font-semibold uppercase tracking-widest transition-colors hover:text-gold ${
+              className={`text-[11px] font-body font-semibold tracking-[0.14em] uppercase transition-colors hover:text-accent ${
                 location.pathname === "/products"
-                  ? "text-gold"
+                  ? "text-accent"
                   : "text-muted-foreground"
               }`}
               data-ocid="nav.link"
@@ -51,36 +63,26 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
-          <Link
-            to="/products"
-            search={{ category: undefined }}
-            className="text-muted-foreground hover:text-foreground transition-colors hidden sm:block"
-            data-ocid="nav.link"
-            aria-label="Search products"
-          >
-            <Search className="w-5 h-5" />
-          </Link>
-
+        <div className="flex items-center gap-5">
           <button
             type="button"
             onClick={identity ? clear : login}
-            className="text-muted-foreground hover:text-foreground transition-colors hidden sm:block"
+            className="text-muted-foreground hover:text-accent transition-colors hidden sm:block"
             title={identity ? "Logout" : "Login"}
             data-ocid="nav.link"
           >
-            <User className="w-5 h-5" />
+            <User className="w-4 h-4" />
           </button>
 
           <Link
             to="/cart"
-            className="relative text-muted-foreground hover:text-foreground transition-colors"
+            className="relative text-muted-foreground hover:text-accent transition-colors"
             data-ocid="nav.link"
             aria-label="Cart"
           >
-            <ShoppingCart className="w-5 h-5" />
+            <ShoppingCart className="w-4 h-4" />
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-gold text-background text-[10px] font-bold font-display w-4 h-4 rounded-full flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-accent text-background text-[9px] font-body font-black w-4 h-4 flex items-center justify-center">
                 {totalItems}
               </span>
             )}
@@ -88,14 +90,14 @@ export default function Navbar() {
 
           <button
             type="button"
-            className="lg:hidden text-foreground"
+            className="lg:hidden text-muted-foreground hover:text-foreground transition-colors"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Toggle menu"
           >
             {mobileOpen ? (
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             ) : (
-              <Menu className="w-5 h-5" />
+              <Menu className="w-4 h-4" />
             )}
           </button>
         </div>
@@ -109,14 +111,14 @@ export default function Navbar() {
             exit={{ height: 0, opacity: 0 }}
             className="lg:hidden bg-surface border-t border-border overflow-hidden"
           >
-            <nav className="px-4 py-4 flex flex-col gap-4">
+            <nav className="px-6 py-6 flex flex-col gap-5">
               {navLinks.map((link) => (
                 <Link
                   key={link.label}
                   to="/products"
                   search={{ category: link.category }}
                   onClick={() => setMobileOpen(false)}
-                  className="text-xs font-display font-semibold uppercase tracking-widest text-muted-foreground hover:text-gold transition-colors"
+                  className="text-[11px] font-body font-semibold tracking-[0.14em] uppercase text-muted-foreground hover:text-accent transition-colors"
                   data-ocid="nav.link"
                 >
                   {link.label}
@@ -125,7 +127,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={identity ? clear : login}
-                className="text-xs font-display font-semibold uppercase tracking-widest text-muted-foreground hover:text-gold transition-colors text-left"
+                className="text-[11px] font-body font-semibold tracking-[0.14em] uppercase text-muted-foreground hover:text-accent transition-colors text-left"
                 data-ocid="nav.link"
               >
                 {identity ? "Logout" : "Login"}

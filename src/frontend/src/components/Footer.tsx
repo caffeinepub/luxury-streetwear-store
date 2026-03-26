@@ -6,85 +6,87 @@ export default function Footer() {
   const hostname = encodeURIComponent(window.location.hostname);
 
   return (
-    <footer className="bg-surface border-t border-border mt-24">
-      <div className="max-w-screen-xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+    <footer className="bg-surface border-t border-border">
+      <div className="max-w-screen-xl mx-auto px-6 py-20">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-14 mb-16">
+          {/* Brand column */}
           <div className="md:col-span-1">
-            <div className="font-display font-black text-4xl tracking-[0.15em] text-foreground mb-4">
+            <div className="font-display font-black text-3xl tracking-tighter uppercase text-foreground mb-5">
               LUXE
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Premium streetwear and luxury fashion. Curated for those who
-              define their own style.
+            <p className="text-sm font-body text-muted-foreground leading-relaxed mb-6">
+              Premium streetwear and luxury fashion. Curated for those who move
+              culture forward.
             </p>
-            <div className="flex gap-4 mt-6">
+            <div className="flex gap-5">
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="text-muted-foreground hover:text-gold transition-colors"
+                className="text-muted-foreground hover:text-accent transition-colors"
               >
-                <Instagram className="w-5 h-5" />
+                <Instagram className="w-4 h-4" />
               </a>
               <a
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Twitter"
-                className="text-muted-foreground hover:text-gold transition-colors"
+                className="text-muted-foreground hover:text-accent transition-colors"
               >
-                <Twitter className="w-5 h-5" />
+                <Twitter className="w-4 h-4" />
               </a>
               <a
                 href="https://youtube.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
-                className="text-muted-foreground hover:text-gold transition-colors"
+                className="text-muted-foreground hover:text-accent transition-colors"
               >
-                <Youtube className="w-5 h-5" />
+                <Youtube className="w-4 h-4" />
               </a>
             </div>
           </div>
 
+          {/* Shop */}
           <div>
-            <h4 className="font-display font-bold text-xs uppercase tracking-widest text-foreground mb-4">
+            <h4 className="font-body font-black text-[10px] uppercase tracking-[0.3em] text-foreground mb-5">
               Shop
             </h4>
             <ul className="space-y-3">
-              {["Sneakers", "Hoodies", "Jeans", "Accessories"].map((cat) => (
+              {[
+                "Sneakers",
+                "Hoodies",
+                "Jeans",
+                "Accessories",
+                "New Arrivals",
+              ].map((cat) => (
                 <li key={cat}>
                   <Link
                     to="/products"
-                    search={{ category: cat }}
-                    className="text-sm text-muted-foreground hover:text-gold transition-colors"
+                    search={{
+                      category: cat === "New Arrivals" ? undefined : cat,
+                    }}
+                    className="text-sm font-body text-muted-foreground hover:text-accent transition-colors"
                   >
                     {cat}
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link
-                  to="/products"
-                  search={{ category: undefined }}
-                  className="text-sm text-muted-foreground hover:text-gold transition-colors"
-                >
-                  New Arrivals
-                </Link>
-              </li>
             </ul>
           </div>
 
+          {/* Support */}
           <div>
-            <h4 className="font-display font-bold text-xs uppercase tracking-widest text-foreground mb-4">
+            <h4 className="font-body font-black text-[10px] uppercase tracking-[0.3em] text-foreground mb-5">
               Support
             </h4>
             <ul className="space-y-3">
               {["Size Guide", "Shipping & Returns", "FAQ", "Contact Us"].map(
                 (item) => (
                   <li key={item}>
-                    <span className="text-sm text-muted-foreground cursor-default">
+                    <span className="text-sm font-body text-muted-foreground cursor-default">
                       {item}
                     </span>
                   </li>
@@ -93,22 +95,23 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Newsletter */}
           <div>
-            <h4 className="font-display font-bold text-xs uppercase tracking-widest text-foreground mb-4">
+            <h4 className="font-body font-black text-[10px] uppercase tracking-[0.3em] text-foreground mb-5">
               Stay Updated
             </h4>
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-sm font-body text-muted-foreground mb-4 leading-relaxed">
               Subscribe for exclusive drops and early access.
             </p>
             <div className="flex">
               <input
                 type="email"
                 placeholder="Your email"
-                className="flex-1 bg-background border border-border text-foreground text-sm px-3 py-2 focus:outline-none focus:border-gold placeholder:text-muted-foreground"
+                className="flex-1 bg-background border border-border text-foreground text-sm font-body px-3 py-2.5 focus:outline-none focus:border-accent placeholder:text-muted-foreground transition-colors"
               />
               <button
                 type="button"
-                className="bg-gold text-background text-xs font-display font-bold uppercase tracking-widest px-4 py-2 hover:opacity-90 transition-opacity"
+                className="bg-accent text-background text-[10px] font-body font-black uppercase tracking-[0.18em] px-4 py-2.5 hover:opacity-90 transition-opacity"
               >
                 Join
               </button>
@@ -117,16 +120,16 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs font-body text-muted-foreground">
             &copy; {year} LUXE. All rights reserved.
           </p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs font-body text-muted-foreground">
             Built with ❤️ using{" "}
             <a
               href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${hostname}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gold hover:underline"
+              className="text-accent hover:underline"
             >
               caffeine.ai
             </a>

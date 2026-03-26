@@ -1,17 +1,45 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
-import { motion } from "motion/react";
-import { useEffect, useRef } from "react";
+import { ArrowRight, CheckCircle } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { useFeaturedProducts, useSeedProducts } from "../hooks/useQueries";
 
 const SKELETON_KEYS = ["sk-a", "sk-b", "sk-c", "sk-d"];
 
+const MARQUEE_ITEMS = [
+  { brand: "BALENCIAGA", key: "b1" },
+  { brand: "DIOR", key: "d1" },
+  { brand: "SP5DER", key: "s1" },
+  { brand: "AMIRI", key: "a1" },
+  { brand: "META", key: "m1" },
+  { brand: "BALENCIAGA", key: "b2" },
+  { brand: "DIOR", key: "d2" },
+  { brand: "SP5DER", key: "s2" },
+  { brand: "AMIRI", key: "a2" },
+  { brand: "META", key: "m2" },
+  { brand: "BALENCIAGA", key: "b3" },
+  { brand: "DIOR", key: "d3" },
+  { brand: "SP5DER", key: "s3" },
+  { brand: "AMIRI", key: "a3" },
+  { brand: "META", key: "m3" },
+  { brand: "BALENCIAGA", key: "b4" },
+  { brand: "DIOR", key: "d4" },
+  { brand: "SP5DER", key: "s4" },
+  { brand: "AMIRI", key: "a4" },
+  { brand: "META", key: "m4" },
+];
+
 export default function HomePage() {
   const { data: products, isLoading } = useFeaturedProducts();
   const { mutate: seed } = useSeedProducts();
   const seeded = useRef(false);
+  const [showSuccess, setShowSuccess] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.location.search.includes("checkout=success"),
+  );
 
   useEffect(() => {
     if (seeded.current) return;
@@ -19,49 +47,80 @@ export default function HomePage() {
     seed();
   }, [seed]);
 
+  useEffect(() => {
+    if (!showSuccess) return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("checkout");
+    window.history.replaceState({}, "", url.toString());
+    const timer = setTimeout(() => setShowSuccess(false), 6000);
+    return () => clearTimeout(timer);
+  }, [showSuccess]);
+
   return (
     <main>
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: -60 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -60 }}
+            className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-3 bg-accent text-background py-4 px-6 text-xs font-body font-bold uppercase tracking-widest shadow-lg"
+            data-ocid="checkout.success_state"
+          >
+            <CheckCircle className="w-5 h-5" />
+            Payment successful — thank you for your order!
+            <button
+              type="button"
+              onClick={() => setShowSuccess(false)}
+              className="ml-4 opacity-70 hover:opacity-100 transition-opacity text-lg leading-none"
+              data-ocid="checkout.close_button"
+            >
+              &times;
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Hero ── */}
       <section
         className="relative min-h-screen flex items-center justify-center overflow-hidden"
         style={{
-          backgroundImage: `linear-gradient(to bottom, oklch(0.09 0 0 / 0.6), oklch(0.09 0 0 / 0.9)), url('/assets/generated/hero-banner.dim_1920x600.jpg')`,
+          backgroundImage: `linear-gradient(to bottom, oklch(0.05 0 0 / 0.6), oklch(0.05 0 0 / 0.95)), url('/assets/generated/hero-banner.dim_1920x600.jpg')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
         data-ocid="hero.section"
       >
         <div className="relative z-10 max-w-screen-xl mx-auto px-6 text-center">
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="h-px bg-gold w-24 mx-auto mb-10"
-          />
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xs font-display font-semibold uppercase tracking-[0.4em] text-gold mb-6"
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="text-[10px] font-body font-bold uppercase tracking-[0.55em] text-accent mb-10"
           >
             Luxury Streetwear Boutique
           </motion.p>
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="font-display font-black uppercase text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] leading-[0.9] tracking-tight text-foreground mb-6"
+            transition={{
+              duration: 0.9,
+              delay: 0.25,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="font-display font-black text-[4.5rem] sm:text-[6.5rem] md:text-[9rem] lg:text-[11rem] xl:text-[13rem] leading-[0.85] tracking-tighter uppercase text-foreground mb-10"
           >
-            DEFINE
+            WEAR
             <br />
-            <span className="text-gold">YOUR</span>
+            <span className="text-accent">THE</span>
             <br />
-            STYLE
+            CULTURE.
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="text-sm text-muted-foreground max-w-md mx-auto mb-10 leading-relaxed"
+            transition={{ duration: 0.7, delay: 0.6 }}
+            className="text-sm font-body text-muted-foreground max-w-sm mx-auto mb-12 leading-relaxed"
           >
             Curated luxury and streetwear. From Balenciaga to Dior — wear what
             moves culture forward.
@@ -75,7 +134,7 @@ export default function HomePage() {
             <Link
               to="/products"
               search={{ category: undefined }}
-              className="inline-flex items-center justify-center gap-2 bg-gold text-background font-display font-bold uppercase tracking-widest text-xs px-10 py-4 hover:opacity-90 transition-opacity"
+              className="inline-flex items-center justify-center gap-2 bg-accent text-background font-body font-black uppercase tracking-[0.18em] text-[11px] px-10 py-4 hover:opacity-90 transition-opacity"
               data-ocid="hero.primary_button"
             >
               Shop Now <ArrowRight className="w-4 h-4" />
@@ -83,7 +142,7 @@ export default function HomePage() {
             <Link
               to="/products"
               search={{ category: undefined }}
-              className="inline-flex items-center justify-center border border-foreground text-foreground font-display font-bold uppercase tracking-widest text-xs px-10 py-4 hover:border-gold hover:text-gold transition-all"
+              className="inline-flex items-center justify-center border border-foreground/25 text-foreground font-body font-semibold uppercase tracking-[0.18em] text-[11px] px-10 py-4 hover:border-accent hover:text-accent transition-all"
               data-ocid="hero.secondary_button"
             >
               Explore Collection
@@ -92,33 +151,52 @@ export default function HomePage() {
         </div>
 
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+          animate={{ y: [0, 10, 0] }}
+          transition={{
+            duration: 2.5,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2"
         >
-          <div className="h-8 w-px bg-gold opacity-60" />
+          <div className="h-10 w-px bg-accent opacity-50" />
         </motion.div>
       </section>
 
+      {/* ── Brand Marquee ── */}
+      <div className="border-y border-border overflow-hidden py-5 bg-card-dark">
+        <div className="marquee-track">
+          {MARQUEE_ITEMS.map(({ brand, key }) => (
+            <span
+              key={key}
+              className="inline-flex items-center gap-8 px-10 text-[11px] font-body font-bold uppercase tracking-[0.35em] text-muted-foreground"
+            >
+              {brand}
+              <span className="w-1.5 h-1.5 bg-accent opacity-80 inline-block" />
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Featured Pieces ── */}
       <section
-        className="max-w-screen-xl mx-auto px-6 py-24"
+        className="max-w-screen-xl mx-auto px-6 py-28"
         data-ocid="featured.section"
       >
-        <div className="flex items-end justify-between mb-12">
+        <div className="flex items-end justify-between mb-16">
           <div>
-            <p className="text-[10px] font-display font-semibold uppercase tracking-[0.3em] text-gold mb-3">
+            <p className="text-[9px] font-body font-bold uppercase tracking-[0.4em] text-accent mb-4">
               Handpicked
             </p>
-            <h2 className="font-display font-black uppercase text-4xl md:text-5xl tracking-tight text-foreground">
-              Featured
-              <br />
-              Pieces
+            <h2 className="font-display font-black uppercase text-5xl md:text-6xl leading-[0.9] tracking-tighter text-foreground">
+              Featured{" "}
+              <span className="italic text-muted-foreground">Pieces</span>
             </h2>
           </div>
           <Link
             to="/products"
             search={{ category: undefined }}
-            className="hidden sm:inline-flex items-center gap-2 text-xs font-display font-semibold uppercase tracking-widest text-muted-foreground hover:text-gold transition-colors"
+            className="hidden sm:inline-flex items-center gap-2 text-[11px] font-body font-semibold uppercase tracking-[0.15em] text-muted-foreground hover:text-accent transition-colors"
             data-ocid="featured.link"
           >
             View All <ArrowRight className="w-4 h-4" />
@@ -127,7 +205,7 @@ export default function HomePage() {
 
         {isLoading ? (
           <div
-            className="grid grid-cols-2 md:grid-cols-4 gap-4"
+            className="grid grid-cols-2 md:grid-cols-4 gap-6"
             data-ocid="featured.loading_state"
           >
             {SKELETON_KEYS.map((k) => (
@@ -140,7 +218,7 @@ export default function HomePage() {
             ))}
           </div>
         ) : products && products.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {products.slice(0, 8).map((product, i) => (
               <ProductCard
                 key={product.id.toString()}
@@ -151,38 +229,21 @@ export default function HomePage() {
           </div>
         ) : (
           <div className="text-center py-20" data-ocid="featured.empty_state">
-            <p className="text-muted-foreground font-display uppercase tracking-widest text-sm">
-              Loading products...
+            <p className="text-muted-foreground font-body uppercase tracking-widest text-sm">
+              Loading products…
             </p>
           </div>
         )}
 
-        <div className="text-center mt-12">
+        <div className="text-center mt-16">
           <Link
             to="/products"
             search={{ category: undefined }}
-            className="inline-flex items-center gap-2 border border-border text-foreground font-display font-bold uppercase tracking-widest text-xs px-10 py-4 hover:border-gold hover:text-gold transition-all"
+            className="inline-flex items-center gap-2 border border-border text-muted-foreground font-body font-semibold uppercase tracking-[0.18em] text-[11px] px-10 py-4 hover:border-accent hover:text-accent transition-all"
             data-ocid="featured.link"
           >
             View Full Collection <ArrowRight className="w-4 h-4" />
           </Link>
-        </div>
-      </section>
-
-      <section className="border-y border-border bg-card-dark py-12">
-        <div className="max-w-screen-xl mx-auto px-6">
-          <div className="flex flex-wrap items-center justify-center gap-12 md:gap-20">
-            {["BALENCIAGA", "DIOR", "SP5DER", "AMIRI", "RAY-BAN"].map(
-              (brand) => (
-                <span
-                  key={brand}
-                  className="font-display font-black text-sm tracking-[0.3em] text-muted-foreground hover:text-gold transition-colors cursor-default"
-                >
-                  {brand}
-                </span>
-              ),
-            )}
-          </div>
         </div>
       </section>
     </main>

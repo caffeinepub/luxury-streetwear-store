@@ -1,17 +1,25 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
-import { ArrowLeft, Minus, Plus, ShoppingCart, Zap } from "lucide-react";
+import {
+  ArrowLeft,
+  Loader2,
+  Minus,
+  Plus,
+  ShoppingCart,
+  Zap,
+} from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useCart } from "../context/CartContext";
-import { useProductById } from "../hooks/useQueries";
+import { useCreateStripeCheckout, useProductById } from "../hooks/useQueries";
 
 export default function ProductDetailPage() {
   const { id } = useParams({ from: "/products/$id" });
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const createCheckout = useCreateStripeCheckout();
 
   const productId = id ? BigInt(id) : undefined;
   const { data: product, isLoading, isError } = useProductById(productId);
@@ -22,10 +30,27 @@ export default function ProductDetailPage() {
     toast.success(`${product.name} added to cart`);
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
     if (!product) return;
-    addToCart(product, quantity);
-    navigate({ to: "/cart" });
+    try {
+      const stripeUrl = await createCheckout.mutateAsync({
+        customerName: "",
+        customerEmail: "",
+        items: [
+          {
+            productId: product.id,
+            quantity: BigInt(quantity),
+            price: product.price,
+          },
+        ],
+        successUrl: `${window.location.origin}/?checkout=success`,
+        cancelUrl: window.location.href,
+      });
+      window.location.href = stripeUrl;
+    } catch {
+      addToCart(product, quantity);
+      navigate({ to: "/cart" });
+    }
   };
 
   if (isLoading) {
@@ -63,7 +88,7 @@ export default function ProductDetailPage() {
           <Link
             to="/products"
             search={{ category: undefined }}
-            className="text-gold font-display uppercase tracking-widest text-xs hover:underline"
+            className="text-accent font-body font-bold uppercase tracking-widest text-xs hover:underline"
           >
             ← Back to Products
           </Link>
@@ -83,7 +108,7 @@ export default function ProductDetailPage() {
             onClick={() =>
               navigate({ to: "/products", search: { category: undefined } })
             }
-            className="text-xs font-display uppercase tracking-widest text-muted-foreground hover:text-gold transition-colors flex items-center gap-2"
+            className="text-xs font-body font-bold uppercase tracking-widest text-muted-foreground hover:text-accent transition-colors flex items-center gap-2"
             data-ocid="product.link"
           >
             <ArrowLeft className="w-3 h-3" /> Back
@@ -92,13 +117,13 @@ export default function ProductDetailPage() {
           <Link
             to="/products"
             search={{ category: undefined }}
-            className="text-xs font-display uppercase tracking-widest text-muted-foreground hover:text-gold transition-colors"
+            className="text-xs font-body font-bold uppercase tracking-widest text-muted-foreground hover:text-accent transition-colors"
             data-ocid="product.link"
           >
             Products
           </Link>
           <span className="text-border">/</span>
-          <span className="text-xs font-display uppercase tracking-widest text-foreground">
+          <span className="text-xs font-body font-bold uppercase tracking-widest text-foreground">
             {product.name}
           </span>
         </nav>
@@ -119,7 +144,7 @@ export default function ProductDetailPage() {
               className="w-full h-full object-cover"
             />
             {product.featured && (
-              <span className="absolute top-4 left-4 bg-gold text-background text-[10px] font-display font-bold uppercase tracking-widest px-3 py-1">
+              <span className="absolute top-4 left-4 bg-accent text-background text-[10px] font-body font-black uppercase tracking-widest px-3 py-1">
                 Featured
               </span>
             )}
@@ -131,13 +156,13 @@ export default function ProductDetailPage() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="flex flex-col"
           >
-            <p className="text-[10px] font-display font-semibold uppercase tracking-[0.4em] text-muted-foreground mb-3">
+            <p className="text-[10px] font-body font-bold uppercase tracking-[0.4em] text-muted-foreground mb-3">
               {product.brand}
             </p>
-            <h1 className="font-display font-black uppercase text-3xl md:text-4xl tracking-tight text-foreground mb-4">
+            <h1 className="font-display font-black uppercase text-3xl md:text-4xl tracking-tighter text-foreground mb-4">
               {product.name}
             </h1>
-            <p className="text-3xl font-display font-bold text-gold mb-6">
+            <p className="text-3xl font-display font-black text-accent mb-6">
               ${product.price.toLocaleString()}
             </p>
 
@@ -147,10 +172,10 @@ export default function ProductDetailPage() {
             </p>
 
             <div className="flex items-center gap-3 mb-8">
-              <span className="text-[10px] font-display uppercase tracking-widest text-muted-foreground">
+              <span className="text-[10px] font-body uppercase tracking-widest text-muted-foreground">
                 Category:
               </span>
-              <span className="text-[10px] font-display font-semibold uppercase tracking-widest border border-border px-2 py-1 text-foreground">
+              <span className="text-[10px] font-body font-bold uppercase tracking-widest border border-border px-2 py-1 text-foreground">
                 {product.category}
               </span>
             </div>
@@ -159,7 +184,7 @@ export default function ProductDetailPage() {
               <div
                 className={`w-2 h-2 rounded-full ${inStock ? "bg-green-500" : "bg-destructive"}`}
               />
-              <span className="text-xs font-display uppercase tracking-widest text-muted-foreground">
+              <span className="text-xs font-body uppercase tracking-widest text-muted-foreground">
                 {inStock
                   ? `In Stock (${product.stock.toString()} available)`
                   : "Out of Stock"}
@@ -167,7 +192,7 @@ export default function ProductDetailPage() {
             </div>
 
             <div className="flex items-center gap-4 mb-8">
-              <span className="text-xs font-display uppercase tracking-widest text-muted-foreground">
+              <span className="text-xs font-body uppercase tracking-widest text-muted-foreground">
                 Qty:
               </span>
               <div className="flex items-center border border-border">
@@ -179,7 +204,7 @@ export default function ProductDetailPage() {
                 >
                   <Minus className="w-3 h-3" />
                 </button>
-                <span className="px-4 font-display font-bold text-sm text-foreground">
+                <span className="px-4 font-body font-black text-sm text-foreground">
                   {quantity}
                 </span>
                 <button
@@ -197,7 +222,7 @@ export default function ProductDetailPage() {
               type="button"
               onClick={handleAddToCart}
               disabled={!inStock}
-              className="flex items-center justify-center gap-3 bg-gold text-background font-display font-bold uppercase tracking-widest text-xs py-5 hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-3 bg-accent text-background font-body font-black uppercase tracking-widest text-xs py-5 hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
               data-ocid="product.primary_button"
             >
               <ShoppingCart className="w-4 h-4" />
@@ -207,12 +232,20 @@ export default function ProductDetailPage() {
             <button
               type="button"
               onClick={handleBuyNow}
-              disabled={!inStock}
-              className="mt-3 flex items-center justify-center gap-3 border border-border text-foreground font-display font-bold uppercase tracking-widest text-xs py-4 hover:border-gold hover:text-gold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              disabled={!inStock || createCheckout.isPending}
+              className="mt-3 flex items-center justify-center gap-3 border border-border text-foreground font-body font-black uppercase tracking-widest text-xs py-4 hover:border-accent hover:text-accent transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               data-ocid="product.secondary_button"
             >
-              <Zap className="w-4 h-4" />
-              Buy Now
+              {createCheckout.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" /> Redirecting...
+                </>
+              ) : (
+                <>
+                  <Zap className="w-4 h-4" />
+                  Buy Now
+                </>
+              )}
             </button>
           </motion.div>
         </div>

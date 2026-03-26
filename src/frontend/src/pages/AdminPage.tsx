@@ -27,6 +27,7 @@ import {
   ChevronDown,
   ChevronUp,
   Edit2,
+  KeyRound,
   Loader2,
   Package,
   Plus,
@@ -45,6 +46,7 @@ import {
   useDeleteProduct,
   useIsAdmin,
   useSeedProducts,
+  useSetStripeSecretKey,
   useUpdateProduct,
 } from "../hooks/useQueries";
 
@@ -225,6 +227,8 @@ export default function AdminPage() {
 
   const [addOpen, setAddOpen] = useState(false);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
+  const [stripeKey, setStripeKey] = useState("");
+  const setStripeSecretKey = useSetStripeSecretKey();
   const [sortAsc, setSortAsc] = useState(true);
 
   const handleAdd = async (data: ProductInput) => {
@@ -322,6 +326,20 @@ export default function AdminPage() {
       </main>
     );
   }
+
+  const handleSaveStripeKey = async () => {
+    if (!stripeKey.trim()) {
+      toast.error("Please enter a Stripe secret key.");
+      return;
+    }
+    try {
+      await setStripeSecretKey.mutateAsync(stripeKey);
+      toast.success("Stripe secret key saved successfully.");
+      setStripeKey("");
+    } catch {
+      toast.error("Failed to save Stripe key. Please try again.");
+    }
+  };
 
   const sortedProducts = products
     ? [...products].sort((a, b) =>
@@ -436,6 +454,13 @@ export default function AdminPage() {
               data-ocid="admin.tab"
             >
               <ShoppingBag className="w-4 h-4 mr-2" /> Orders
+            </TabsTrigger>
+            <TabsTrigger
+              value="stripe"
+              className="font-display font-semibold uppercase text-xs tracking-widest px-8 py-3 rounded-none data-[state=active]:bg-gold data-[state=active]:text-background"
+              data-ocid="admin.tab"
+            >
+              <KeyRound className="w-4 h-4 mr-2" /> Stripe
             </TabsTrigger>
           </TabsList>
 
@@ -688,6 +713,70 @@ export default function AdminPage() {
                 </table>
               </div>
             )}
+          </TabsContent>
+
+          <TabsContent value="stripe">
+            <div className="max-w-lg">
+              <div className="border border-border bg-card-dark p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <KeyRound className="w-5 h-5 text-gold" />
+                  <h2 className="font-display font-bold uppercase text-sm tracking-widest text-foreground">
+                    Stripe Settings
+                  </h2>
+                </div>
+                <p className="text-xs text-muted-foreground mb-6 leading-relaxed">
+                  Enter your Stripe secret key to enable real payments. Use{" "}
+                  <span className="text-gold font-mono">sk_test_...</span> for
+                  testing or{" "}
+                  <span className="text-gold font-mono">sk_live_...</span> for
+                  production.
+                </p>
+                <div className="space-y-4">
+                  <div>
+                    <label
+                      htmlFor="stripe-key"
+                      className="text-[10px] font-display uppercase tracking-widest text-muted-foreground mb-1.5 block"
+                    >
+                      Stripe Secret Key
+                    </label>
+                    <input
+                      id="stripe-key"
+                      type="password"
+                      value={stripeKey}
+                      onChange={(e) => setStripeKey(e.target.value)}
+                      placeholder="sk_live_... or sk_test_..."
+                      className="w-full bg-background border border-border text-foreground placeholder:text-muted-foreground focus:border-gold outline-none px-4 py-3 text-sm font-mono"
+                      data-ocid="admin.input"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleSaveStripeKey}
+                    disabled={setStripeSecretKey.isPending}
+                    className="flex items-center gap-2 bg-gold text-background font-display font-bold uppercase tracking-widest text-xs px-8 py-3 hover:opacity-90 transition-opacity disabled:opacity-50"
+                    data-ocid="admin.save_button"
+                  >
+                    {setStripeSecretKey.isPending ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" /> Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Check className="w-4 h-4" /> Save Key
+                      </>
+                    )}
+                  </button>
+                  {setStripeSecretKey.isSuccess && (
+                    <p
+                      className="text-xs text-green-500 font-display uppercase tracking-widest"
+                      data-ocid="admin.success_state"
+                    >
+                      Key saved successfully.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </div>

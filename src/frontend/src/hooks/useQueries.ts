@@ -149,3 +149,41 @@ export function usePlaceOrder() {
     },
   });
 }
+
+export function useCreateStripeCheckout() {
+  const { actor } = useActor();
+  return useMutation({
+    mutationFn: async ({
+      customerName,
+      customerEmail,
+      items,
+      successUrl,
+      cancelUrl,
+    }: {
+      customerName: string;
+      customerEmail: string;
+      items: OrderItem[];
+      successUrl: string;
+      cancelUrl: string;
+    }) => {
+      if (!actor) throw new Error("No actor");
+      return (actor as any).createStripeCheckout(
+        customerName,
+        customerEmail,
+        items,
+        successUrl,
+        cancelUrl,
+      );
+    },
+  });
+}
+
+export function useSetStripeSecretKey() {
+  const { actor } = useActor();
+  return useMutation({
+    mutationFn: async (key: string) => {
+      if (!actor) throw new Error("No actor");
+      return (actor as any).setStripeSecretKey(key);
+    },
+  });
+}

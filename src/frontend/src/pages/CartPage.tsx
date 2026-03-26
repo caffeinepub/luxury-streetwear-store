@@ -1,24 +1,30 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "@tanstack/react-router";
-import { Loader2, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import {
+  CreditCard,
+  Loader2,
+  Minus,
+  Plus,
+  ShoppingBag,
+  Trash2,
+} from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useCart } from "../context/CartContext";
-import { usePlaceOrder } from "../hooks/useQueries";
+import { useCreateStripeCheckout } from "../hooks/useQueries";
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, clearCart, totalPrice } =
     useCart();
-  const placeOrder = usePlaceOrder();
+  const createCheckout = useCreateStripeCheckout();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [orderSuccess, setOrderSuccess] = useState<bigint | null>(null);
 
-  const handlePlaceOrder = async () => {
+  const handleCheckout = async () => {
     setNameError("");
     setEmailError("");
     let valid = true;
@@ -38,53 +44,19 @@ export default function CartPage() {
         quantity: BigInt(item.quantity),
         price: item.product.price,
       }));
-      const orderId = await placeOrder.mutateAsync({
+      const stripeUrl = await createCheckout.mutateAsync({
         customerName: name,
         customerEmail: email,
         items: orderItems,
+        successUrl: `${window.location.origin}/?checkout=success`,
+        cancelUrl: `${window.location.origin}/cart`,
       });
-      setOrderSuccess(orderId);
       clearCart();
+      window.location.href = stripeUrl;
     } catch {
-      toast.error("Failed to place order. Please try again.");
+      toast.error("Failed to create checkout session. Please try again.");
     }
   };
-
-  if (orderSuccess !== null) {
-    return (
-      <main
-        className="pt-16 min-h-screen flex items-center justify-center"
-        data-ocid="cart.success_state"
-      >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center max-w-md px-6"
-        >
-          <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center mx-auto mb-8">
-            <ShoppingBag className="w-8 h-8 text-background" />
-          </div>
-          <h2 className="font-display font-black uppercase text-4xl tracking-tight text-foreground mb-4">
-            Order Placed!
-          </h2>
-          <p className="text-muted-foreground mb-2">
-            Your order #{orderSuccess.toString()} has been received.
-          </p>
-          <p className="text-sm text-muted-foreground mb-10">
-            We'll confirm your order via email shortly.
-          </p>
-          <Link
-            to="/products"
-            search={{ category: undefined }}
-            className="inline-flex items-center bg-gold text-background font-display font-bold uppercase tracking-widest text-xs px-10 py-4 hover:opacity-90 transition-opacity"
-            data-ocid="cart.link"
-          >
-            Continue Shopping
-          </Link>
-        </motion.div>
-      </main>
-    );
-  }
 
   if (items.length === 0) {
     return (
@@ -94,7 +66,7 @@ export default function CartPage() {
       >
         <div className="text-center">
           <ShoppingBag className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
-          <h2 className="font-display font-black uppercase text-4xl tracking-tight text-foreground mb-4">
+          <h2 className="font-display font-black uppercase text-4xl tracking-tighter text-foreground mb-4">
             Your Cart is Empty
           </h2>
           <p className="text-muted-foreground mb-10">
@@ -103,7 +75,7 @@ export default function CartPage() {
           <Link
             to="/products"
             search={{ category: undefined }}
-            className="inline-flex bg-gold text-background font-display font-bold uppercase tracking-widest text-xs px-10 py-4 hover:opacity-90 transition-opacity"
+            className="inline-flex bg-accent text-background font-body font-black uppercase tracking-widest text-xs px-10 py-4 hover:opacity-90 transition-opacity"
             data-ocid="cart.link"
           >
             Shop Now
@@ -116,7 +88,7 @@ export default function CartPage() {
   return (
     <main className="pt-16" data-ocid="cart.section">
       <div className="max-w-screen-xl mx-auto px-6 py-12">
-        <h1 className="font-display font-black uppercase text-4xl md:text-5xl tracking-tight text-foreground mb-12">
+        <h1 className="font-display font-black uppercase text-4xl md:text-5xl tracking-tighter text-foreground mb-12">
           Your Cart
         </h1>
 
@@ -143,13 +115,13 @@ export default function CartPage() {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] font-display uppercase tracking-widest text-muted-foreground mb-1">
+                    <p className="text-[10px] font-body font-bold uppercase tracking-widest text-muted-foreground mb-1">
                       {item.product.brand}
                     </p>
-                    <h3 className="font-display font-bold uppercase text-sm text-foreground mb-2 truncate">
+                    <h3 className="font-display font-black uppercase text-sm text-foreground mb-2 truncate">
                       {item.product.name}
                     </h3>
-                    <p className="text-gold font-display font-semibold text-sm">
+                    <p className="text-accent font-body font-black text-sm">
                       ${item.product.price.toLocaleString()}
                     </p>
                   </div>
@@ -173,7 +145,7 @@ export default function CartPage() {
                       >
                         <Minus className="w-3 h-3" />
                       </button>
-                      <span className="px-3 text-xs font-display font-bold text-foreground">
+                      <span className="px-3 text-xs font-body font-black text-foreground">
                         {item.quantity}
                       </span>
                       <button
@@ -187,7 +159,7 @@ export default function CartPage() {
                         <Plus className="w-3 h-3" />
                       </button>
                     </div>
-                    <p className="text-xs font-display text-foreground">
+                    <p className="text-xs font-body text-foreground">
                       ${(item.product.price * item.quantity).toLocaleString()}
                     </p>
                   </div>
@@ -197,7 +169,7 @@ export default function CartPage() {
           </div>
 
           <div className="bg-card-dark border border-border p-6 sticky top-24">
-            <h2 className="font-display font-bold uppercase text-sm tracking-widest text-foreground mb-6">
+            <h2 className="font-body font-black uppercase text-sm tracking-widest text-foreground mb-6">
               Order Summary
             </h2>
             <div className="space-y-3 mb-6">
@@ -207,7 +179,7 @@ export default function CartPage() {
                   className="flex justify-between text-xs text-muted-foreground"
                 >
                   <span className="truncate mr-4">
-                    {item.product.name} × {item.quantity}
+                    {item.product.name} &times; {item.quantity}
                   </span>
                   <span className="shrink-0">
                     ${(item.product.price * item.quantity).toLocaleString()}
@@ -217,23 +189,23 @@ export default function CartPage() {
             </div>
             <div className="border-t border-border pt-4 mb-8">
               <div className="flex justify-between items-center">
-                <span className="font-display font-bold uppercase text-xs tracking-widest text-foreground">
+                <span className="font-body font-black uppercase text-xs tracking-widest text-foreground">
                   Total
                 </span>
-                <span className="font-display font-black text-xl text-gold">
+                <span className="font-display font-black text-xl text-accent">
                   ${totalPrice.toLocaleString()}
                 </span>
               </div>
             </div>
 
             <div className="space-y-4 mb-6">
-              <h3 className="font-display font-bold uppercase text-xs tracking-widest text-foreground">
+              <h3 className="font-body font-black uppercase text-xs tracking-widest text-foreground">
                 Contact Info
               </h3>
               <div>
                 <Label
                   htmlFor="checkout-name"
-                  className="text-[10px] font-display uppercase tracking-widest text-muted-foreground mb-1.5 block"
+                  className="text-[10px] font-body font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block"
                 >
                   Full Name
                 </Label>
@@ -242,7 +214,7 @@ export default function CartPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="John Doe"
-                  className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-gold rounded-none"
+                  className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-accent rounded-none"
                   data-ocid="cart.input"
                 />
                 {nameError && (
@@ -257,7 +229,7 @@ export default function CartPage() {
               <div>
                 <Label
                   htmlFor="checkout-email"
-                  className="text-[10px] font-display uppercase tracking-widest text-muted-foreground mb-1.5 block"
+                  className="text-[10px] font-body font-bold uppercase tracking-widest text-muted-foreground mb-1.5 block"
                 >
                   Email
                 </Label>
@@ -267,7 +239,7 @@ export default function CartPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="john@example.com"
-                  className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-gold rounded-none"
+                  className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-accent rounded-none"
                   data-ocid="cart.input"
                 />
                 {emailError && (
@@ -283,19 +255,25 @@ export default function CartPage() {
 
             <button
               type="button"
-              onClick={handlePlaceOrder}
-              disabled={placeOrder.isPending}
-              className="w-full flex items-center justify-center gap-2 bg-gold text-background font-display font-bold uppercase tracking-widest text-xs py-4 hover:opacity-90 transition-opacity disabled:opacity-50"
+              onClick={handleCheckout}
+              disabled={createCheckout.isPending}
+              className="w-full flex items-center justify-center gap-2 bg-accent text-background font-body font-black uppercase tracking-widest text-xs py-4 hover:opacity-90 transition-opacity disabled:opacity-50"
               data-ocid="cart.submit_button"
             >
-              {placeOrder.isPending ? (
+              {createCheckout.isPending ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" /> Processing...
+                  <Loader2 className="w-4 h-4 animate-spin" /> Redirecting...
                 </>
               ) : (
-                "Place Order"
+                <>
+                  <CreditCard className="w-4 h-4" /> Checkout with Stripe
+                </>
               )}
             </button>
+
+            <p className="text-[10px] text-muted-foreground text-center mt-3">
+              Secured by Stripe. You'll be redirected to complete payment.
+            </p>
           </div>
         </div>
       </div>

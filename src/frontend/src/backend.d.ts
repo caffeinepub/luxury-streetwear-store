@@ -50,6 +50,7 @@ export enum UserRole {
 export interface backendInterface {
     addProduct(input: ProductInput): Promise<bigint>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    createStripeCheckout(customerName: string, customerEmail: string, items: Array<OrderItem>, successUrl: string, cancelUrl: string): Promise<string>;
     deleteProduct(productId: bigint): Promise<void>;
     getAllOrders(): Promise<Array<Order>>;
     getAllProducts(): Promise<Array<Product>>;
@@ -63,8 +64,10 @@ export interface backendInterface {
     getProductsByCategory(category: string): Promise<Array<Product>>;
     getProductsByCategoryAndPriceRange(category: string, minPrice: number, maxPrice: number): Promise<Array<Product>>;
     getProductsByPriceRange(minPrice: number, maxPrice: number): Promise<Array<Product>>;
+    getStripeSessionStatus(sessionId: string): Promise<string>;
     isCallerAdmin(): Promise<boolean>;
     placeOrder(customerName: string, customerEmail: string, items: Array<OrderItem>): Promise<bigint>;
     seedProductsOnce(): Promise<void>;
+    setStripeSecretKey(key: string): Promise<void>;
     updateProduct(productId: bigint, product: ProductInput): Promise<void>;
 }
