@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0rem;
+    /* Dark luxury streetwear palette */
+    --background: 0.09 0 0;
+    --foreground: 0.95 0 0;
+    --card: 0.13 0 0;
+    --card-foreground: 0.95 0 0;
+    --popover: 0.15 0 0;
+    --popover-foreground: 0.95 0 0;
+    --primary: 0.95 0 0;
+    --primary-foreground: 0.09 0 0;
+    --secondary: 0.18 0 0;
+    --secondary-foreground: 0.95 0 0;
+    --muted: 0.18 0 0;
+    --muted-foreground: 0.7 0 0;
+    --accent: 0.63 0.105 75;
+    --accent-foreground: 0.09 0 0;
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+    --border: 0.22 0 0;
+    --input: 0.22 0 0;
+    --ring: 0.63 0.105 75;
+    --chart-1: 0.646 0.222 41.116;
+    --chart-2: 0.6 0.118 184.704;
+    --chart-3: 0.398 0.07 227.392;
+    --chart-4: 0.828 0.189 84.429;
+    --chart-5: 0.769 0.188 70.08;
+    --sidebar: 0.12 0 0;
+    --sidebar-foreground: 0.95 0 0;
+    --sidebar-primary: 0.63 0.105 75;
+    --sidebar-primary-foreground: 0.09 0 0;
+    --sidebar-accent: 0.18 0 0;
+    --sidebar-accent-foreground: 0.95 0 0;
+    --sidebar-border: 0.22 0 0;
+    --sidebar-ring: 0.63 0.105 75;
+
+    /* Custom tokens */
+    --gold: 0.63 0.105 75;
+    --surface: 0.12 0 0;
+    --card-dark: 0.13 0 0;
+    --image-mat: 0.94 0 0;
+    --btn-dark: 0.22 0 0;
+    --muted-text: 0.7 0 0;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Montserrat", system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-gold {
+    color: oklch(var(--gold));
+  }
+  .bg-gold {
+    background-color: oklch(var(--gold));
+  }
+  .border-gold {
+    border-color: oklch(var(--gold));
+  }
+  .bg-surface {
+    background-color: oklch(var(--surface));
+  }
+  .bg-card-dark {
+    background-color: oklch(var(--card-dark));
+  }
+  .bg-image-mat {
+    background-color: oklch(var(--image-mat));
+  }
+  .bg-btn-dark {
+    background-color: oklch(var(--btn-dark));
+  }
+  .text-muted-text {
+    color: oklch(var(--muted-text));
+  }
+  .font-display {
+    font-family: "Montserrat", system-ui, sans-serif;
+  }
+}
