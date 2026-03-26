@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
-import { ArrowLeft, Minus, Plus, ShoppingCart } from "lucide-react";
+import { ArrowLeft, Minus, Plus, ShoppingCart, Zap } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -20,6 +20,12 @@ export default function ProductDetailPage() {
     if (!product) return;
     addToCart(product, quantity);
     toast.success(`${product.name} added to cart`);
+  };
+
+  const handleBuyNow = () => {
+    if (!product) return;
+    addToCart(product, quantity);
+    navigate({ to: "/cart" });
   };
 
   if (isLoading) {
@@ -198,13 +204,16 @@ export default function ProductDetailPage() {
               Add to Cart
             </button>
 
-            <Link
-              to="/cart"
-              className="mt-3 text-center border border-border text-foreground font-display font-bold uppercase tracking-widest text-xs py-4 hover:border-gold hover:text-gold transition-all"
+            <button
+              type="button"
+              onClick={handleBuyNow}
+              disabled={!inStock}
+              className="mt-3 flex items-center justify-center gap-3 border border-border text-foreground font-display font-bold uppercase tracking-widest text-xs py-4 hover:border-gold hover:text-gold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               data-ocid="product.secondary_button"
             >
-              Go to Cart
-            </Link>
+              <Zap className="w-4 h-4" />
+              Buy Now
+            </button>
           </motion.div>
         </div>
       </div>

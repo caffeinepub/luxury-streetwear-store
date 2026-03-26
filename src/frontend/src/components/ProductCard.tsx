@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import type { Product } from "../backend";
@@ -10,6 +11,12 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const { addToCart } = useCart();
+  const navigate = useNavigate();
+
+  const handleBuyNow = () => {
+    addToCart(product);
+    navigate({ to: "/cart" });
+  };
 
   return (
     <motion.div
@@ -48,19 +55,19 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         </p>
 
         <div className="flex gap-2">
-          <Link
-            to="/products/$id"
-            params={{ id: product.id.toString() }}
-            className="flex-1 text-center text-[10px] font-display font-bold uppercase tracking-widest border border-border text-foreground py-2 hover:border-gold hover:text-gold transition-all"
-            data-ocid="products.item.1"
+          <button
+            type="button"
+            onClick={handleBuyNow}
+            className="flex-1 text-[10px] font-display font-bold uppercase tracking-widest bg-gold text-background py-2 hover:opacity-90 transition-all"
+            data-ocid="products.primary_button"
           >
-            View Product
-          </Link>
+            Buy Now
+          </button>
           <button
             type="button"
             onClick={() => addToCart(product)}
             className="flex-1 text-[10px] font-display font-bold uppercase tracking-widest bg-btn-dark text-foreground py-2 hover:bg-gold hover:text-background transition-all"
-            data-ocid="products.item.1"
+            data-ocid="products.secondary_button"
           >
             Add to Cart
           </button>
