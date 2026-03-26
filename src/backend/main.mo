@@ -48,11 +48,6 @@ actor {
 
   include MixinStorage();
 
-  // fetchProductImages(productId : Int) -> async [ExternalBlob]
-  // deleteProductImage(productId : Int, imageId : Text) -> async ()
-  // searchProducts(searchText : Text) -> async [Product]
-  // listAllCategories() -> async [Text]
-
   // --- Product Management ---
 
   public shared ({ caller }) func addProduct(input : ProductInput) : async Int {
@@ -306,8 +301,8 @@ actor {
         brand = "Balenciaga";
         category = "Sneakers";
         price = 895.0;
-        description = "High-end sneakers for the stylish";
-        imageUrl = "https://external-storage.com/image1.jpg";
+        description = "Iconic chunky sole sneakers with technical mesh and overlapping panels. A bold statement in luxury sportswear.";
+        imageUrl = "/assets/generated/balenciaga-track.dim_600x600.jpg";
         stock = 10;
         featured = true;
       },
@@ -316,8 +311,8 @@ actor {
         brand = "Balenciaga";
         category = "Sneakers";
         price = 750.0;
-        description = "Comfortable and luxurious sneakers";
-        imageUrl = "https://external-storage.com/image2.jpg";
+        description = "Retro-inspired running silhouette with distressed finish. Comfort meets avant-garde design.";
+        imageUrl = "/assets/generated/balenciaga-runner.dim_600x600.jpg";
         stock = 8;
         featured = true;
       },
@@ -326,8 +321,8 @@ actor {
         brand = "Meta";
         category = "Accessories";
         price = 299.0;
-        description = "Smart glasses with integrated tech";
-        imageUrl = "https://external-storage.com/image3.jpg";
+        description = "Open-ear speakers, built-in camera, and hands-free calling in a classic Ray-Ban frame. Tech meets style.";
+        imageUrl = "/assets/generated/meta-smart-glasses.dim_600x600.jpg";
         stock = 15;
         featured = false;
       },
@@ -336,8 +331,8 @@ actor {
         brand = "Dior";
         category = "Sneakers";
         price = 1150.0;
-        description = "Premium designer sneakers";
-        imageUrl = "https://external-storage.com/image4.jpg";
+        description = "Ultra-refined mesh and leather sneaker. The B30 elevates everyday movement to runway-worthy elegance.";
+        imageUrl = "/assets/generated/dior-b30.dim_600x600.jpg";
         stock = 5;
         featured = true;
       },
@@ -346,8 +341,8 @@ actor {
         brand = "Dior";
         category = "Sneakers";
         price = 1050.0;
-        description = "Luxury footwear for fashion-forward individuals";
-        imageUrl = "https://external-storage.com/image5.jpg";
+        description = "Monogram-accented technical sneaker blending couture craftsmanship with contemporary street energy.";
+        imageUrl = "/assets/generated/dior-b22.dim_600x600.jpg";
         stock = 7;
         featured = true;
       },
@@ -356,8 +351,8 @@ actor {
         brand = "Sp5der";
         category = "Hoodies";
         price = 350.0;
-        description = "Stylish and comfortable hoodie";
-        imageUrl = "https://external-storage.com/image6.jpg";
+        description = "Web-graphic heavyweight fleece hoodie. Worn by the culture, defined by the streets.";
+        imageUrl = "/assets/generated/sp5der-hoodie.dim_600x600.jpg";
         stock = 20;
         featured = true;
       },
@@ -366,8 +361,8 @@ actor {
         brand = "Amiri";
         category = "Jeans";
         price = 650.0;
-        description = "High-quality designer jeans";
-        imageUrl = "https://external-storage.com/image7.jpg";
+        description = "Hand-distressed denim with leather biker patches. Rock and roll luxury for the modern wardrobe.";
+        imageUrl = "/assets/generated/amiri-jeans.dim_600x600.jpg";
         stock = 12;
         featured = true;
       },
@@ -386,14 +381,11 @@ actor {
     };
   };
 
-  public shared ({ caller }) func seedProductsOnce() : async () {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
-      Runtime.trap("Unauthorized: Only admins can perform this action");
-    };
+  // Public seeding — runs only once when the store is empty (no auth required)
+  public shared func seedProductsOnce() : async () {
     if (_productIdMap.isEmpty()) {
       seedProducts();
-    } else {
-      Runtime.trap("Products already seeded");
     };
+    // Silently no-op if already seeded
   };
 };
