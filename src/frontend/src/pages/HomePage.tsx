@@ -109,11 +109,11 @@ export default function HomePage() {
             }}
             className="font-display font-black text-[4.5rem] sm:text-[6.5rem] md:text-[9rem] lg:text-[11rem] xl:text-[13rem] leading-[0.85] tracking-tighter uppercase text-foreground mb-10"
           >
-            WEAR
+            ADNAAN
             <br />
             THE
             <br />
-            CULTURE.
+            VENDOR.
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}

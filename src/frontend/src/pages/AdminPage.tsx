@@ -33,9 +33,10 @@ import {
   Plus,
   ShoppingBag,
   Trash2,
+  Upload,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import type { Product, ProductInput } from "../backend";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
@@ -49,6 +50,8 @@ import {
   useSetStripeSecretKey,
   useUpdateProduct,
 } from "../hooks/useQueries";
+import { useStorageClient } from "../hooks/useStorageClient";
+import type { StorageClient } from "../utils/StorageClient";
 
 const emptyForm: ProductInput = {
   name: "",
@@ -66,15 +69,40 @@ function ProductForm({
   onSubmit,
   isPending,
   onClose,
+  storageClient,
 }: {
   initial: ProductInput;
   onSubmit: (data: ProductInput) => void;
   isPending: boolean;
   onClose: () => void;
+  storageClient: StorageClient | null;
 }) {
   const [form, setForm] = useState<ProductInput>(initial);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const set = <K extends keyof ProductInput>(key: K, value: ProductInput[K]) =>
     setForm((prev) => ({ ...prev, [key]: value }));
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !storageClient) return;
+    setUploading(true);
+    setUploadProgress(0);
+    try {
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const { hash } = await storageClient.putFile(bytes, setUploadProgress);
+      const url = await storageClient.getDirectURL(hash);
+      set("imageUrl", url);
+      toast.success("Photo uploaded successfully");
+    } catch {
+      toast.error("Failed to upload photo");
+    } finally {
+      setUploading(false);
+      setUploadProgress(0);
+    }
+  };
 
   return (
     <form
@@ -152,13 +180,52 @@ function ProductForm({
         />
       </div>
       <div>
-        <Label className="text-[10px] font-display uppercase tracking-widest text-muted-foreground block mb-1">
-          Image URL
-        </Label>
+        <div className="flex items-center gap-2 mb-1">
+          <Label className="text-[10px] font-display uppercase tracking-widest text-muted-foreground">
+            Photo
+          </Label>
+          {form.imageUrl && (
+            <img
+              src={form.imageUrl}
+              alt="preview"
+              className="w-10 h-10 object-cover border border-border"
+            />
+          )}
+        </div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileChange}
+          data-ocid="admin.upload_button"
+        />
+        <button
+          type="button"
+          disabled={uploading || !storageClient}
+          onClick={() => fileInputRef.current?.click()}
+          className="flex items-center gap-2 border border-border text-foreground font-display font-bold uppercase tracking-widest text-xs px-4 py-2 hover:bg-foreground hover:text-background transition-all disabled:opacity-50 mb-2"
+          data-ocid="admin.upload_button"
+        >
+          {uploading ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Upload className="w-4 h-4" />
+          )}
+          {uploading ? `Uploading ${uploadProgress}%` : "Upload Photo"}
+        </button>
+        {uploading && (
+          <div className="w-full bg-border h-0.5 mb-2">
+            <div
+              className="bg-foreground h-0.5 transition-all"
+              style={{ width: `${uploadProgress}%` }}
+            />
+          </div>
+        )}
         <Input
           value={form.imageUrl}
           onChange={(e) => set("imageUrl", e.target.value)}
-          placeholder="https://..."
+          placeholder="https://... (or upload above)"
           className="bg-background border-border text-foreground rounded-none"
           data-ocid="admin.input"
         />
@@ -224,6 +291,7 @@ export default function AdminPage() {
   const updateProduct = useUpdateProduct();
   const deleteProduct = useDeleteProduct();
   const seedProducts = useSeedProducts();
+  const storageClient = useStorageClient();
 
   const [addOpen, setAddOpen] = useState(false);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
@@ -400,6 +468,7 @@ export default function AdminPage() {
                   onSubmit={handleAdd}
                   isPending={addProduct.isPending}
                   onClose={() => setAddOpen(false)}
+                  storageClient={storageClient}
                 />
               </DialogContent>
             </Dialog>
@@ -434,6 +503,7 @@ export default function AdminPage() {
                 onSubmit={handleEdit}
                 isPending={updateProduct.isPending}
                 onClose={() => setEditProduct(null)}
+                storageClient={storageClient}
               />
             )}
           </DialogContent>

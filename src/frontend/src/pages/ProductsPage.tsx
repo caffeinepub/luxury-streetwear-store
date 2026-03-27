@@ -4,7 +4,14 @@ import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { useProductsByCategory } from "../hooks/useQueries";
 
-const CATEGORIES = ["All", "Sneakers", "Hoodies", "Jeans", "Accessories"];
+const CATEGORIES = [
+  "All",
+  "Sneakers",
+  "Hoodies",
+  "Jeans",
+  "Jackets",
+  "Accessories",
+];
 const SKELETON_KEYS = [
   "sk-1",
   "sk-2",
