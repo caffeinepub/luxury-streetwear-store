@@ -420,6 +420,36 @@ actor {
         stock = 12;
         featured = true;
       },
+      {
+        name = "Canada Goose Parka";
+        brand = "Canada Goose";
+        category = "Jackets";
+        price = 4.99;
+        description = "The ultimate cold-weather luxury. Arctic-grade down fill, signature coyote fur trim, and iconic disc badge. Built for the extreme, styled for the street.";
+        imageUrl = "/assets/generated/canada-goose-jacket.dim_600x600.jpg";
+        stock = 8;
+        featured = true;
+      },
+      {
+        name = "Moncler Down Jacket";
+        brand = "Moncler";
+        category = "Jackets";
+        price = 4.99;
+        description = "French Alpine luxury in quilted form. Lightweight goose down insulation, clean silhouette, and the iconic Moncler badge. Outerwear elevated to art.";
+        imageUrl = "/assets/generated/moncler-jacket.dim_600x600.jpg";
+        stock = 6;
+        featured = true;
+      },
+      {
+        name = "Hellstar Hoodie";
+        brand = "Hellstar";
+        category = "Hoodies";
+        price = 4.99;
+        description = "Heavyweight fleece with bold graphic print. Hellstar represents the duality of dark culture and street luxury — worn by the few who understand.";
+        imageUrl = "/assets/generated/hellstar-hoodie.dim_600x600.jpg";
+        stock = 15;
+        featured = true;
+      },
     ];
 
     for (input in products.values()) {

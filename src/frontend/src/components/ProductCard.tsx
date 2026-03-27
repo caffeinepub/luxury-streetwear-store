@@ -49,12 +49,12 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           <img
             src={
               product.imageUrl ||
-              `https://placehold.co/600x600/efefef/1a1a1a?text=${encodeURIComponent(product.name)}`
+              `https://placehold.co/600x600/f2f2f2/111111?text=${encodeURIComponent(product.name)}`
             }
             alt={product.name}
             className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           />
-          {/* Hover button overlay */}
+          {/* Hover overlay */}
           <div className="absolute inset-x-0 bottom-0 flex opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
               type="button"
@@ -62,7 +62,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
                 e.preventDefault();
                 addToCart(product);
               }}
-              className="flex-1 bg-background/90 text-foreground text-[10px] font-body font-bold uppercase tracking-[0.18em] py-3 hover:bg-accent hover:text-background transition-colors duration-200"
+              className="flex-1 bg-background/90 text-foreground text-[10px] font-body font-bold uppercase tracking-[0.18em] py-3 hover:bg-foreground hover:text-background transition-colors duration-200"
               data-ocid="products.secondary_button"
             >
               Add to Cart
@@ -73,20 +73,20 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
                 e.preventDefault();
                 handleBuyNow();
               }}
-              className="flex-1 bg-accent text-background text-[10px] font-body font-bold uppercase tracking-[0.18em] py-3 hover:opacity-90 transition-opacity duration-200"
+              className="flex-1 bg-foreground text-background text-[10px] font-body font-bold uppercase tracking-[0.18em] py-3 hover:opacity-80 transition-opacity duration-200"
               data-ocid="products.primary_button"
             >
               Buy Now
             </button>
           </div>
           {product.featured && (
-            <span className="absolute top-3 left-3 bg-accent text-background text-[9px] font-body font-black uppercase tracking-widest px-2 py-1">
+            <span className="absolute top-3 left-3 bg-foreground text-background text-[9px] font-body font-black uppercase tracking-widest px-2 py-1">
               Featured
             </span>
           )}
         </div>
-        {/* Accent bottom rule on hover */}
-        <div className="h-px bg-border group-hover:bg-accent transition-colors duration-300" />
+        {/* Bottom rule */}
+        <div className="h-px bg-border group-hover:bg-foreground transition-colors duration-300" />
       </Link>
 
       {/* Text info */}
@@ -94,10 +94,10 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         <p className="text-[9px] font-body font-bold uppercase tracking-[0.25em] text-muted-foreground mb-1">
           {product.brand}
         </p>
-        <h3 className="font-display font-bold text-[15px] text-foreground mb-2 leading-tight truncate uppercase">
+        <h3 className="font-display font-bold text-[15px] text-foreground mb-2 leading-tight truncate">
           {product.name}
         </h3>
-        <p className="text-accent font-body font-black text-base mb-4">
+        <p className="text-foreground font-body font-black text-base mb-4">
           ${product.price.toLocaleString()}
         </p>
 
@@ -106,7 +106,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           <button
             type="button"
             onClick={() => addToCart(product)}
-            className="flex-1 border border-border text-foreground text-[10px] font-body font-bold uppercase tracking-widest py-3 hover:border-accent hover:text-accent transition-colors duration-200"
+            className="flex-1 border border-border text-foreground text-[10px] font-body font-bold uppercase tracking-widest py-3 hover:border-foreground hover:bg-foreground hover:text-background transition-all duration-200"
             data-ocid="products.secondary_button"
           >
             Add to Cart
@@ -115,7 +115,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             type="button"
             onClick={handleBuyNow}
             disabled={createCheckout.isPending}
-            className="flex-1 bg-accent text-background text-[10px] font-body font-black uppercase tracking-widest py-3 hover:opacity-90 transition-opacity duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-1"
+            className="flex-1 bg-foreground text-background text-[10px] font-body font-black uppercase tracking-widest py-3 hover:opacity-80 transition-opacity duration-200 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-1"
             data-ocid="products.primary_button"
           >
             {createCheckout.isPending ? (

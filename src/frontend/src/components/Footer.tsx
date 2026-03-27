@@ -6,7 +6,7 @@ export default function Footer() {
   const hostname = encodeURIComponent(window.location.hostname);
 
   return (
-    <footer className="bg-surface border-t border-border">
+    <footer className="bg-background border-t border-border">
       <div className="max-w-screen-xl mx-auto px-6 py-20">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-14 mb-16">
           {/* Brand column */}
@@ -24,7 +24,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="text-muted-foreground hover:text-accent transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Instagram className="w-4 h-4" />
               </a>
@@ -33,7 +33,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Twitter"
-                className="text-muted-foreground hover:text-accent transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Twitter className="w-4 h-4" />
               </a>
@@ -42,7 +42,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
-                className="text-muted-foreground hover:text-accent transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Youtube className="w-4 h-4" />
               </a>
@@ -68,7 +68,7 @@ export default function Footer() {
                     search={{
                       category: cat === "New Arrivals" ? undefined : cat,
                     }}
-                    className="text-sm font-body text-muted-foreground hover:text-accent transition-colors"
+                    className="text-sm font-body text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {cat}
                   </Link>
@@ -107,11 +107,11 @@ export default function Footer() {
               <input
                 type="email"
                 placeholder="Your email"
-                className="flex-1 bg-background border border-border text-foreground text-sm font-body px-3 py-2.5 focus:outline-none focus:border-accent placeholder:text-muted-foreground transition-colors"
+                className="flex-1 bg-background border border-border text-foreground text-sm font-body px-3 py-2.5 focus:outline-none focus:border-foreground placeholder:text-muted-foreground transition-colors"
               />
               <button
                 type="button"
-                className="bg-accent text-background text-[10px] font-body font-black uppercase tracking-[0.18em] px-4 py-2.5 hover:opacity-90 transition-opacity"
+                className="bg-foreground text-background text-[10px] font-body font-black uppercase tracking-[0.18em] px-4 py-2.5 hover:opacity-80 transition-opacity"
               >
                 Join
               </button>
@@ -129,7 +129,7 @@ export default function Footer() {
               href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${hostname}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent hover:underline"
+              className="text-foreground hover:underline"
             >
               caffeine.ai
             </a>

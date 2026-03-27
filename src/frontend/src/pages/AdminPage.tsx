@@ -192,7 +192,7 @@ function ProductForm({
         <button
           type="submit"
           disabled={isPending}
-          className="flex-1 flex items-center justify-center gap-2 bg-gold text-background font-display font-bold uppercase tracking-widest text-xs py-3 hover:opacity-90 transition-opacity disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-2 bg-foreground text-background font-display font-bold uppercase tracking-widest text-xs py-3 hover:opacity-80 transition-opacity disabled:opacity-50"
           data-ocid="admin.submit_button"
         >
           {isPending ? (
@@ -205,7 +205,7 @@ function ProductForm({
         <button
           type="button"
           onClick={onClose}
-          className="px-6 border border-border text-foreground font-display font-bold uppercase tracking-widest text-xs hover:border-gold hover:text-gold transition-all"
+          className="px-6 border border-border text-foreground font-display font-bold uppercase tracking-widest text-xs hover:border-foreground hover:bg-foreground hover:text-background transition-all"
           data-ocid="admin.cancel_button"
         >
           Cancel
@@ -287,7 +287,7 @@ export default function AdminPage() {
             type="button"
             onClick={login}
             disabled={isLoggingIn}
-            className="flex items-center gap-2 mx-auto bg-gold text-background font-display font-bold uppercase tracking-widest text-xs px-10 py-4 hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="flex items-center gap-2 mx-auto bg-foreground text-background font-display font-bold uppercase tracking-widest text-xs px-10 py-4 hover:opacity-80 transition-opacity disabled:opacity-50"
             data-ocid="admin.primary_button"
           >
             {isLoggingIn && <Loader2 className="w-4 h-4 animate-spin" />}
@@ -304,7 +304,7 @@ export default function AdminPage() {
         className="pt-16 min-h-screen flex items-center justify-center"
         data-ocid="admin.loading_state"
       >
-        <Loader2 className="w-8 h-8 animate-spin text-gold" />
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
       </main>
     );
   }
@@ -352,7 +352,7 @@ export default function AdminPage() {
       <div className="max-w-screen-xl mx-auto px-6 py-12">
         <div className="flex items-center justify-between mb-12">
           <div>
-            <p className="text-[10px] font-display font-semibold uppercase tracking-[0.4em] text-gold mb-2">
+            <p className="text-[10px] font-display font-semibold uppercase tracking-[0.4em] text-muted-foreground mb-2">
               Management
             </p>
             <h1 className="font-display font-black uppercase text-4xl tracking-tight text-foreground">
@@ -365,7 +365,7 @@ export default function AdminPage() {
                 type="button"
                 onClick={handleSeed}
                 disabled={seedProducts.isPending}
-                className="flex items-center gap-2 border border-gold text-gold font-display font-bold uppercase tracking-widest text-xs px-6 py-3 hover:bg-gold hover:text-background transition-all"
+                className="flex items-center gap-2 border border-border text-foreground font-display font-bold uppercase tracking-widest text-xs px-6 py-3 hover:bg-foreground hover:text-background transition-all"
                 data-ocid="admin.secondary_button"
               >
                 {seedProducts.isPending ? (
@@ -380,14 +380,14 @@ export default function AdminPage() {
               <DialogTrigger asChild>
                 <button
                   type="button"
-                  className="flex items-center gap-2 bg-gold text-background font-display font-bold uppercase tracking-widest text-xs px-6 py-3 hover:opacity-90 transition-opacity"
+                  className="flex items-center gap-2 bg-foreground text-background font-display font-bold uppercase tracking-widest text-xs px-6 py-3 hover:opacity-80 transition-opacity"
                   data-ocid="admin.open_modal_button"
                 >
                   <Plus className="w-4 h-4" /> Add Product
                 </button>
               </DialogTrigger>
               <DialogContent
-                className="bg-card-dark border-border max-w-lg rounded-none"
+                className="bg-background border-border max-w-lg rounded-none"
                 data-ocid="admin.dialog"
               >
                 <DialogHeader>
@@ -411,7 +411,7 @@ export default function AdminPage() {
           onOpenChange={(v) => !v && setEditProduct(null)}
         >
           <DialogContent
-            className="bg-card-dark border-border max-w-lg rounded-none"
+            className="bg-background border-border max-w-lg rounded-none"
             data-ocid="admin.dialog"
           >
             <DialogHeader>
@@ -443,21 +443,21 @@ export default function AdminPage() {
           <TabsList className="bg-card-dark border border-border rounded-none h-auto p-0 mb-8">
             <TabsTrigger
               value="products"
-              className="font-display font-semibold uppercase text-xs tracking-widest px-8 py-3 rounded-none data-[state=active]:bg-gold data-[state=active]:text-background"
+              className="font-display font-semibold uppercase text-xs tracking-widest px-8 py-3 rounded-none data-[state=active]:bg-foreground data-[state=active]:text-background"
               data-ocid="admin.tab"
             >
               <Package className="w-4 h-4 mr-2" /> Products
             </TabsTrigger>
             <TabsTrigger
               value="orders"
-              className="font-display font-semibold uppercase text-xs tracking-widest px-8 py-3 rounded-none data-[state=active]:bg-gold data-[state=active]:text-background"
+              className="font-display font-semibold uppercase text-xs tracking-widest px-8 py-3 rounded-none data-[state=active]:bg-foreground data-[state=active]:text-background"
               data-ocid="admin.tab"
             >
               <ShoppingBag className="w-4 h-4 mr-2" /> Orders
             </TabsTrigger>
             <TabsTrigger
               value="stripe"
-              className="font-display font-semibold uppercase text-xs tracking-widest px-8 py-3 rounded-none data-[state=active]:bg-gold data-[state=active]:text-background"
+              className="font-display font-semibold uppercase text-xs tracking-widest px-8 py-3 rounded-none data-[state=active]:bg-foreground data-[state=active]:text-background"
               data-ocid="admin.tab"
             >
               <KeyRound className="w-4 h-4 mr-2" /> Stripe
@@ -478,7 +478,7 @@ export default function AdminPage() {
               >
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-border bg-surface">
+                    <tr className="border-b border-border bg-card-dark">
                       <th className="text-left px-4 py-3">
                         <button
                           type="button"
@@ -532,7 +532,7 @@ export default function AdminPage() {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: i * 0.03 }}
-                          className="border-b border-border hover:bg-surface transition-colors"
+                          className="border-b border-border hover:bg-card-dark transition-colors"
                           data-ocid={`admin.row.${i + 1}`}
                         >
                           <td className="px-4 py-4">
@@ -541,7 +541,7 @@ export default function AdminPage() {
                                 <img
                                   src={
                                     product.imageUrl ||
-                                    `https://placehold.co/100x100/efefef/1a1a1a?text=${encodeURIComponent(product.name)}`
+                                    `https://placehold.co/100x100/f2f2f2/111111?text=${encodeURIComponent(product.name)}`
                                   }
                                   alt={product.name}
                                   className="w-full h-full object-cover"
@@ -558,7 +558,7 @@ export default function AdminPage() {
                           <td className="px-4 py-4 text-xs text-muted-foreground hidden md:table-cell">
                             {product.category}
                           </td>
-                          <td className="px-4 py-4 text-xs font-display font-semibold text-gold">
+                          <td className="px-4 py-4 text-xs font-display font-semibold text-foreground">
                             ${product.price.toLocaleString()}
                           </td>
                           <td className="px-4 py-4 text-xs text-muted-foreground hidden md:table-cell">
@@ -566,7 +566,7 @@ export default function AdminPage() {
                           </td>
                           <td className="px-4 py-4 hidden lg:table-cell">
                             {product.featured ? (
-                              <span className="text-[10px] font-display font-semibold uppercase tracking-widest bg-gold text-background px-2 py-0.5">
+                              <span className="text-[10px] font-display font-semibold uppercase tracking-widest bg-foreground text-background px-2 py-0.5">
                                 Yes
                               </span>
                             ) : (
@@ -580,7 +580,7 @@ export default function AdminPage() {
                               <button
                                 type="button"
                                 onClick={() => setEditProduct(product)}
-                                className="p-1.5 text-muted-foreground hover:text-gold transition-colors"
+                                className="p-1.5 text-muted-foreground hover:text-foreground transition-colors"
                                 data-ocid={`admin.edit_button.${i + 1}`}
                               >
                                 <Edit2 className="w-4 h-4" />
@@ -596,7 +596,7 @@ export default function AdminPage() {
                                   </button>
                                 </AlertDialogTrigger>
                                 <AlertDialogContent
-                                  className="bg-card-dark border-border rounded-none"
+                                  className="bg-background border-border rounded-none"
                                   data-ocid="admin.dialog"
                                 >
                                   <AlertDialogHeader>
@@ -613,7 +613,7 @@ export default function AdminPage() {
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
                                     <AlertDialogCancel
-                                      className="bg-transparent border-border text-foreground rounded-none font-display font-bold uppercase tracking-widest text-xs hover:border-gold hover:text-gold"
+                                      className="bg-transparent border-border text-foreground rounded-none font-display font-bold uppercase tracking-widest text-xs hover:border-foreground hover:bg-foreground hover:text-background"
                                       data-ocid="admin.cancel_button"
                                     >
                                       Cancel
@@ -653,7 +653,7 @@ export default function AdminPage() {
               >
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-border bg-surface">
+                    <tr className="border-b border-border bg-card-dark">
                       <th className="text-left px-4 py-3 text-[10px] font-display font-semibold uppercase tracking-widest text-muted-foreground">
                         Order ID
                       </th>
@@ -686,10 +686,10 @@ export default function AdminPage() {
                       orders.map((order, i) => (
                         <tr
                           key={order.id.toString()}
-                          className="border-b border-border hover:bg-surface transition-colors"
+                          className="border-b border-border hover:bg-card-dark transition-colors"
                           data-ocid={`admin.row.${i + 1}`}
                         >
-                          <td className="px-4 py-4 text-xs font-display font-bold text-gold">
+                          <td className="px-4 py-4 text-xs font-display font-bold text-foreground">
                             #{order.id.toString()}
                           </td>
                           <td className="px-4 py-4 text-xs text-foreground hidden sm:table-cell">
@@ -719,17 +719,17 @@ export default function AdminPage() {
             <div className="max-w-lg">
               <div className="border border-border bg-card-dark p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <KeyRound className="w-5 h-5 text-gold" />
+                  <KeyRound className="w-5 h-5 text-foreground" />
                   <h2 className="font-display font-bold uppercase text-sm tracking-widest text-foreground">
                     Stripe Settings
                   </h2>
                 </div>
                 <p className="text-xs text-muted-foreground mb-6 leading-relaxed">
                   Enter your Stripe secret key to enable real payments. Use{" "}
-                  <span className="text-gold font-mono">sk_test_...</span> for
-                  testing or{" "}
-                  <span className="text-gold font-mono">sk_live_...</span> for
-                  production.
+                  <span className="text-foreground font-mono">sk_test_...</span>{" "}
+                  for testing or{" "}
+                  <span className="text-foreground font-mono">sk_live_...</span>{" "}
+                  for production.
                 </p>
                 <div className="space-y-4">
                   <div>
@@ -745,7 +745,7 @@ export default function AdminPage() {
                       value={stripeKey}
                       onChange={(e) => setStripeKey(e.target.value)}
                       placeholder="sk_live_... or sk_test_..."
-                      className="w-full bg-background border border-border text-foreground placeholder:text-muted-foreground focus:border-gold outline-none px-4 py-3 text-sm font-mono"
+                      className="w-full bg-background border border-border text-foreground placeholder:text-muted-foreground focus:border-foreground outline-none px-4 py-3 text-sm font-mono"
                       data-ocid="admin.input"
                     />
                   </div>
@@ -753,7 +753,7 @@ export default function AdminPage() {
                     type="button"
                     onClick={handleSaveStripeKey}
                     disabled={setStripeSecretKey.isPending}
-                    className="flex items-center gap-2 bg-gold text-background font-display font-bold uppercase tracking-widest text-xs px-8 py-3 hover:opacity-90 transition-opacity disabled:opacity-50"
+                    className="flex items-center gap-2 bg-foreground text-background font-display font-bold uppercase tracking-widest text-xs px-8 py-3 hover:opacity-80 transition-opacity disabled:opacity-50"
                     data-ocid="admin.save_button"
                   >
                     {setStripeSecretKey.isPending ? (
@@ -768,7 +768,7 @@ export default function AdminPage() {
                   </button>
                   {setStripeSecretKey.isSuccess && (
                     <p
-                      className="text-xs text-green-500 font-display uppercase tracking-widest"
+                      className="text-xs text-foreground font-display uppercase tracking-widest"
                       data-ocid="admin.success_state"
                     >
                       Key saved successfully.

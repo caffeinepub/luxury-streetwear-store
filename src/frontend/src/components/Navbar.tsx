@@ -28,15 +28,15 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 bg-surface transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 bg-background transition-all duration-300 ${
         scrolled ? "border-b border-border" : "border-b border-transparent"
       }`}
     >
       <div className="max-w-screen-xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo — bold sans, all-caps */}
+        {/* Logo */}
         <Link
           to="/"
-          className="font-display font-black text-xl tracking-tighter uppercase text-foreground hover:text-accent transition-colors"
+          className="font-display font-black text-xl tracking-tighter uppercase text-foreground hover:opacity-60 transition-opacity"
           data-ocid="nav.link"
         >
           LUXE
@@ -51,9 +51,9 @@ export default function Navbar() {
               key={link.label}
               to="/products"
               search={{ category: link.category }}
-              className={`text-[11px] font-body font-semibold tracking-[0.14em] uppercase transition-colors hover:text-accent ${
+              className={`text-[11px] font-body font-semibold tracking-[0.14em] uppercase transition-colors hover:text-foreground ${
                 location.pathname === "/products"
-                  ? "text-accent"
+                  ? "text-foreground"
                   : "text-muted-foreground"
               }`}
               data-ocid="nav.link"
@@ -67,7 +67,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={identity ? clear : login}
-            className="text-muted-foreground hover:text-accent transition-colors hidden sm:block"
+            className="text-muted-foreground hover:text-foreground transition-colors hidden sm:block"
             title={identity ? "Logout" : "Login"}
             data-ocid="nav.link"
           >
@@ -76,13 +76,13 @@ export default function Navbar() {
 
           <Link
             to="/cart"
-            className="relative text-muted-foreground hover:text-accent transition-colors"
+            className="relative text-muted-foreground hover:text-foreground transition-colors"
             data-ocid="nav.link"
             aria-label="Cart"
           >
             <ShoppingCart className="w-4 h-4" />
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-accent text-background text-[9px] font-body font-black w-4 h-4 flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-foreground text-background text-[9px] font-body font-black w-4 h-4 flex items-center justify-center">
                 {totalItems}
               </span>
             )}
@@ -109,7 +109,7 @@ export default function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="lg:hidden bg-surface border-t border-border overflow-hidden"
+            className="lg:hidden bg-background border-t border-border overflow-hidden"
           >
             <nav className="px-6 py-6 flex flex-col gap-5">
               {navLinks.map((link) => (
@@ -118,7 +118,7 @@ export default function Navbar() {
                   to="/products"
                   search={{ category: link.category }}
                   onClick={() => setMobileOpen(false)}
-                  className="text-[11px] font-body font-semibold tracking-[0.14em] uppercase text-muted-foreground hover:text-accent transition-colors"
+                  className="text-[11px] font-body font-semibold tracking-[0.14em] uppercase text-muted-foreground hover:text-foreground transition-colors"
                   data-ocid="nav.link"
                 >
                   {link.label}
@@ -127,7 +127,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={identity ? clear : login}
-                className="text-[11px] font-body font-semibold tracking-[0.14em] uppercase text-muted-foreground hover:text-accent transition-colors text-left"
+                className="text-[11px] font-body font-semibold tracking-[0.14em] uppercase text-muted-foreground hover:text-foreground transition-colors text-left"
                 data-ocid="nav.link"
               >
                 {identity ? "Logout" : "Login"}

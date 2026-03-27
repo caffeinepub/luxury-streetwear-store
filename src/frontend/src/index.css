@@ -1,4 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/assets/fonts/PlayfairDisplay.woff2") format("woff2");
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url("/assets/fonts/GeneralSans.woff2") format("woff2");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -7,47 +21,48 @@
 @layer base {
   :root {
     --radius: 0rem;
-    /* Bold modern streetwear palette */
-    --background: 0.05 0 0;
-    --foreground: 0.98 0 0;
-    --card: 0.08 0 0;
-    --card-foreground: 0.98 0 0;
-    --popover: 0.1 0 0;
-    --popover-foreground: 0.98 0 0;
-    --primary: 0.98 0 0;
-    --primary-foreground: 0.05 0 0;
-    --secondary: 0.12 0 0;
-    --secondary-foreground: 0.98 0 0;
-    --muted: 0.12 0 0;
-    --muted-foreground: 0.5 0 0;
-    --accent: 0.88 0.25 130;
-    --accent-foreground: 0.05 0 0;
+
+    /* Monochrome light palette */
+    --background: 1.0 0 0;
+    --foreground: 0.08 0 0;
+    --card: 0.97 0 0;
+    --card-foreground: 0.08 0 0;
+    --popover: 1.0 0 0;
+    --popover-foreground: 0.08 0 0;
+    --primary: 0.08 0 0;
+    --primary-foreground: 1.0 0 0;
+    --secondary: 0.94 0 0;
+    --secondary-foreground: 0.08 0 0;
+    --muted: 0.94 0 0;
+    --muted-foreground: 0.45 0 0;
+    --accent: 0.08 0 0;
+    --accent-foreground: 1.0 0 0;
     --destructive: 0.577 0.245 27.325;
     --destructive-foreground: 0.985 0 0;
-    --border: 0.16 0 0;
-    --input: 0.16 0 0;
-    --ring: 0.88 0.25 130;
-    --chart-1: 0.88 0.25 130;
-    --chart-2: 0.6 0.118 184.704;
-    --chart-3: 0.398 0.07 227.392;
-    --chart-4: 0.828 0.189 84.429;
-    --chart-5: 0.769 0.188 70.08;
-    --sidebar: 0.07 0 0;
-    --sidebar-foreground: 0.98 0 0;
-    --sidebar-primary: 0.88 0.25 130;
-    --sidebar-primary-foreground: 0.05 0 0;
-    --sidebar-accent: 0.12 0 0;
-    --sidebar-accent-foreground: 0.98 0 0;
-    --sidebar-border: 0.16 0 0;
-    --sidebar-ring: 0.88 0.25 130;
+    --border: 0.88 0 0;
+    --input: 0.88 0 0;
+    --ring: 0.08 0 0;
+    --chart-1: 0.3 0 0;
+    --chart-2: 0.45 0 0;
+    --chart-3: 0.6 0 0;
+    --chart-4: 0.75 0 0;
+    --chart-5: 0.88 0 0;
+    --sidebar: 0.97 0 0;
+    --sidebar-foreground: 0.08 0 0;
+    --sidebar-primary: 0.08 0 0;
+    --sidebar-primary-foreground: 1.0 0 0;
+    --sidebar-accent: 0.94 0 0;
+    --sidebar-accent-foreground: 0.08 0 0;
+    --sidebar-border: 0.88 0 0;
+    --sidebar-ring: 0.08 0 0;
 
-    /* Custom tokens */
-    --lime: 0.88 0.25 130;
-    --surface: 0.07 0 0;
-    --card-dark: 0.08 0 0;
-    --image-mat: 0.93 0 0;
-    --btn-dark: 0.12 0 0;
-    --muted-text: 0.5 0 0;
+    /* Custom tokens — all neutral */
+    --surface: 0.99 0 0;
+    --card-dark: 0.95 0 0;
+    --image-mat: 0.95 0 0;
+    --btn-dark: 0.08 0 0;
+    --muted-text: 0.45 0 0;
+    --gold: 0.08 0 0;
   }
 
   * {
@@ -55,12 +70,12 @@
   }
 
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   body {
     @apply bg-background text-foreground;
-    font-family: "Space Grotesk", Inter, system-ui, sans-serif;
+    font-family: "General Sans", system-ui, sans-serif;
   }
 
   h1,
@@ -69,30 +84,28 @@
   h4,
   h5,
   h6 {
-    font-family: "Space Grotesk", Inter, system-ui, sans-serif;
+    font-family: "Playfair Display", Georgia, serif;
   }
 }
 
 @layer utilities {
-  /* accent = electric lime */
   .text-accent {
-    color: oklch(var(--lime));
+    color: oklch(var(--accent));
   }
   .bg-accent {
-    background-color: oklch(var(--lime));
+    background-color: oklch(var(--accent));
   }
   .border-accent {
-    border-color: oklch(var(--lime));
+    border-color: oklch(var(--accent));
   }
-  /* legacy aliases — keep working */
   .text-gold {
-    color: oklch(var(--lime));
+    color: oklch(var(--gold));
   }
   .bg-gold {
-    background-color: oklch(var(--lime));
+    background-color: oklch(var(--gold));
   }
   .border-gold {
-    border-color: oklch(var(--lime));
+    border-color: oklch(var(--gold));
   }
   .bg-surface {
     background-color: oklch(var(--surface));
@@ -110,12 +123,11 @@
     color: oklch(var(--muted-text));
   }
   .font-display {
-    font-family: "Space Grotesk", Inter, system-ui, sans-serif;
+    font-family: "Playfair Display", Georgia, serif;
   }
   .font-body {
-    font-family: "Space Grotesk", Inter, system-ui, sans-serif;
+    font-family: "General Sans", system-ui, sans-serif;
   }
-  /* remove italic accent — just italic now */
   .font-instrument-italic {
     font-style: italic;
   }

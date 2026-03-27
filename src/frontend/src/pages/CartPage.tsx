@@ -75,7 +75,7 @@ export default function CartPage() {
           <Link
             to="/products"
             search={{ category: undefined }}
-            className="inline-flex bg-accent text-background font-body font-black uppercase tracking-widest text-xs px-10 py-4 hover:opacity-90 transition-opacity"
+            className="inline-flex bg-foreground text-background font-body font-black uppercase tracking-widest text-xs px-10 py-4 hover:opacity-80 transition-opacity"
             data-ocid="cart.link"
           >
             Shop Now
@@ -108,7 +108,7 @@ export default function CartPage() {
                     <img
                       src={
                         item.product.imageUrl ||
-                        `https://placehold.co/200x200/efefef/1a1a1a?text=${encodeURIComponent(item.product.name)}`
+                        `https://placehold.co/200x200/f2f2f2/111111?text=${encodeURIComponent(item.product.name)}`
                       }
                       alt={item.product.name}
                       className="w-full h-full object-cover"
@@ -121,7 +121,7 @@ export default function CartPage() {
                     <h3 className="font-display font-black uppercase text-sm text-foreground mb-2 truncate">
                       {item.product.name}
                     </h3>
-                    <p className="text-accent font-body font-black text-sm">
+                    <p className="text-foreground font-body font-black text-sm">
                       ${item.product.price.toLocaleString()}
                     </p>
                   </div>
@@ -192,7 +192,7 @@ export default function CartPage() {
                 <span className="font-body font-black uppercase text-xs tracking-widest text-foreground">
                   Total
                 </span>
-                <span className="font-display font-black text-xl text-accent">
+                <span className="font-display font-black text-xl text-foreground">
                   ${totalPrice.toLocaleString()}
                 </span>
               </div>
@@ -214,7 +214,7 @@ export default function CartPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="John Doe"
-                  className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-accent rounded-none"
+                  className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-foreground rounded-none"
                   data-ocid="cart.input"
                 />
                 {nameError && (
@@ -239,7 +239,7 @@ export default function CartPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="john@example.com"
-                  className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-accent rounded-none"
+                  className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-foreground rounded-none"
                   data-ocid="cart.input"
                 />
                 {emailError && (
@@ -257,7 +257,7 @@ export default function CartPage() {
               type="button"
               onClick={handleCheckout}
               disabled={createCheckout.isPending}
-              className="w-full flex items-center justify-center gap-2 bg-accent text-background font-body font-black uppercase tracking-widest text-xs py-4 hover:opacity-90 transition-opacity disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 bg-foreground text-background font-body font-black uppercase tracking-widest text-xs py-4 hover:opacity-80 transition-opacity disabled:opacity-50"
               data-ocid="cart.submit_button"
             >
               {createCheckout.isPending ? (

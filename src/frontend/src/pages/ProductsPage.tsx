@@ -42,7 +42,7 @@ export default function ProductsPage() {
     <main className="pt-16">
       <section className="bg-card-dark border-b border-border py-16">
         <div className="max-w-screen-xl mx-auto px-6">
-          <p className="text-[10px] font-body font-bold uppercase tracking-[0.4em] text-accent mb-4">
+          <p className="text-[10px] font-body font-bold uppercase tracking-[0.4em] text-muted-foreground mb-4">
             Collection
           </p>
           <h1 className="font-display font-black uppercase text-5xl md:text-6xl tracking-tighter text-foreground">
@@ -51,7 +51,7 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      <section className="sticky top-16 z-30 bg-surface border-b border-border">
+      <section className="sticky top-16 z-30 bg-background border-b border-border">
         <div className="max-w-screen-xl mx-auto px-6">
           <div className="flex gap-0 overflow-x-auto">
             {CATEGORIES.map((cat) => (
@@ -61,14 +61,14 @@ export default function ProductsPage() {
                 onClick={() => handleCategoryChange(cat)}
                 className={`relative shrink-0 font-body font-bold uppercase text-xs tracking-widest px-6 py-5 transition-colors ${
                   activeCategory === cat
-                    ? "text-accent"
+                    ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
                 data-ocid="products.tab"
               >
                 {cat}
                 {activeCategory === cat && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent" />
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground" />
                 )}
               </button>
             ))}

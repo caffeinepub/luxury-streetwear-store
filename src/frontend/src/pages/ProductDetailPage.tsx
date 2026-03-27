@@ -88,7 +88,7 @@ export default function ProductDetailPage() {
           <Link
             to="/products"
             search={{ category: undefined }}
-            className="text-accent font-body font-bold uppercase tracking-widest text-xs hover:underline"
+            className="text-foreground font-body font-bold uppercase tracking-widest text-xs hover:underline"
           >
             ← Back to Products
           </Link>
@@ -108,7 +108,7 @@ export default function ProductDetailPage() {
             onClick={() =>
               navigate({ to: "/products", search: { category: undefined } })
             }
-            className="text-xs font-body font-bold uppercase tracking-widest text-muted-foreground hover:text-accent transition-colors flex items-center gap-2"
+            className="text-xs font-body font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
             data-ocid="product.link"
           >
             <ArrowLeft className="w-3 h-3" /> Back
@@ -117,7 +117,7 @@ export default function ProductDetailPage() {
           <Link
             to="/products"
             search={{ category: undefined }}
-            className="text-xs font-body font-bold uppercase tracking-widest text-muted-foreground hover:text-accent transition-colors"
+            className="text-xs font-body font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
             data-ocid="product.link"
           >
             Products
@@ -138,13 +138,13 @@ export default function ProductDetailPage() {
             <img
               src={
                 product.imageUrl ||
-                `https://placehold.co/600x600/efefef/1a1a1a?text=${encodeURIComponent(product.name)}`
+                `https://placehold.co/600x600/f2f2f2/111111?text=${encodeURIComponent(product.name)}`
               }
               alt={product.name}
               className="w-full h-full object-cover"
             />
             {product.featured && (
-              <span className="absolute top-4 left-4 bg-accent text-background text-[10px] font-body font-black uppercase tracking-widest px-3 py-1">
+              <span className="absolute top-4 left-4 bg-foreground text-background text-[10px] font-body font-black uppercase tracking-widest px-3 py-1">
                 Featured
               </span>
             )}
@@ -162,7 +162,7 @@ export default function ProductDetailPage() {
             <h1 className="font-display font-black uppercase text-3xl md:text-4xl tracking-tighter text-foreground mb-4">
               {product.name}
             </h1>
-            <p className="text-3xl font-display font-black text-accent mb-6">
+            <p className="text-3xl font-display font-black text-foreground mb-6">
               ${product.price.toLocaleString()}
             </p>
 
@@ -182,7 +182,7 @@ export default function ProductDetailPage() {
 
             <div className="flex items-center gap-2 mb-8">
               <div
-                className={`w-2 h-2 rounded-full ${inStock ? "bg-green-500" : "bg-destructive"}`}
+                className={`w-2 h-2 rounded-full ${inStock ? "bg-foreground" : "bg-destructive"}`}
               />
               <span className="text-xs font-body uppercase tracking-widest text-muted-foreground">
                 {inStock
@@ -222,7 +222,7 @@ export default function ProductDetailPage() {
               type="button"
               onClick={handleAddToCart}
               disabled={!inStock}
-              className="flex items-center justify-center gap-3 bg-accent text-background font-body font-black uppercase tracking-widest text-xs py-5 hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-3 bg-foreground text-background font-body font-black uppercase tracking-widest text-xs py-5 hover:opacity-80 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
               data-ocid="product.primary_button"
             >
               <ShoppingCart className="w-4 h-4" />
@@ -233,7 +233,7 @@ export default function ProductDetailPage() {
               type="button"
               onClick={handleBuyNow}
               disabled={!inStock || createCheckout.isPending}
-              className="mt-3 flex items-center justify-center gap-3 border border-border text-foreground font-body font-black uppercase tracking-widest text-xs py-4 hover:border-accent hover:text-accent transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="mt-3 flex items-center justify-center gap-3 border border-border text-foreground font-body font-black uppercase tracking-widest text-xs py-4 hover:border-foreground hover:bg-foreground hover:text-background transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               data-ocid="product.secondary_button"
             >
               {createCheckout.isPending ? (

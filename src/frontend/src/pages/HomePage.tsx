@@ -14,21 +14,25 @@ const MARQUEE_ITEMS = [
   { brand: "SP5DER", key: "s1" },
   { brand: "AMIRI", key: "a1" },
   { brand: "META", key: "m1" },
+  { brand: "CANADA GOOSE", key: "cg1" },
+  { brand: "MONCLER", key: "mc1" },
+  { brand: "HELLSTAR", key: "hs1" },
   { brand: "BALENCIAGA", key: "b2" },
   { brand: "DIOR", key: "d2" },
   { brand: "SP5DER", key: "s2" },
   { brand: "AMIRI", key: "a2" },
   { brand: "META", key: "m2" },
+  { brand: "CANADA GOOSE", key: "cg2" },
+  { brand: "MONCLER", key: "mc2" },
+  { brand: "HELLSTAR", key: "hs2" },
   { brand: "BALENCIAGA", key: "b3" },
   { brand: "DIOR", key: "d3" },
   { brand: "SP5DER", key: "s3" },
   { brand: "AMIRI", key: "a3" },
   { brand: "META", key: "m3" },
-  { brand: "BALENCIAGA", key: "b4" },
-  { brand: "DIOR", key: "d4" },
-  { brand: "SP5DER", key: "s4" },
-  { brand: "AMIRI", key: "a4" },
-  { brand: "META", key: "m4" },
+  { brand: "CANADA GOOSE", key: "cg3" },
+  { brand: "MONCLER", key: "mc3" },
+  { brand: "HELLSTAR", key: "hs3" },
 ];
 
 export default function HomePage() {
@@ -64,7 +68,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: -60 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -60 }}
-            className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-3 bg-accent text-background py-4 px-6 text-xs font-body font-bold uppercase tracking-widest shadow-lg"
+            className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-3 bg-foreground text-background py-4 px-6 text-xs font-body font-bold uppercase tracking-widest"
             data-ocid="checkout.success_state"
           >
             <CheckCircle className="w-5 h-5" />
@@ -81,14 +85,9 @@ export default function HomePage() {
         )}
       </AnimatePresence>
 
-      {/* ── Hero ── */}
+      {/* ── Hero — pure white, typographic ── */}
       <section
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, oklch(0.05 0 0 / 0.6), oklch(0.05 0 0 / 0.95)), url('/assets/generated/hero-banner.dim_1920x600.jpg')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
+        className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background"
         data-ocid="hero.section"
       >
         <div className="relative z-10 max-w-screen-xl mx-auto px-6 text-center">
@@ -96,7 +95,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-[10px] font-body font-bold uppercase tracking-[0.55em] text-accent mb-10"
+            className="text-[10px] font-body font-bold uppercase tracking-[0.55em] text-muted-foreground mb-10"
           >
             Luxury Streetwear Boutique
           </motion.p>
@@ -112,7 +111,7 @@ export default function HomePage() {
           >
             WEAR
             <br />
-            <span className="text-accent">THE</span>
+            THE
             <br />
             CULTURE.
           </motion.h1>
@@ -134,7 +133,7 @@ export default function HomePage() {
             <Link
               to="/products"
               search={{ category: undefined }}
-              className="inline-flex items-center justify-center gap-2 bg-accent text-background font-body font-black uppercase tracking-[0.18em] text-[11px] px-10 py-4 hover:opacity-90 transition-opacity"
+              className="inline-flex items-center justify-center gap-2 bg-foreground text-background font-body font-black uppercase tracking-[0.18em] text-[11px] px-10 py-4 hover:opacity-80 transition-opacity"
               data-ocid="hero.primary_button"
             >
               Shop Now <ArrowRight className="w-4 h-4" />
@@ -142,7 +141,7 @@ export default function HomePage() {
             <Link
               to="/products"
               search={{ category: undefined }}
-              className="inline-flex items-center justify-center border border-foreground/25 text-foreground font-body font-semibold uppercase tracking-[0.18em] text-[11px] px-10 py-4 hover:border-accent hover:text-accent transition-all"
+              className="inline-flex items-center justify-center border border-border text-foreground font-body font-semibold uppercase tracking-[0.18em] text-[11px] px-10 py-4 hover:border-foreground transition-all"
               data-ocid="hero.secondary_button"
             >
               Explore Collection
@@ -159,7 +158,7 @@ export default function HomePage() {
           }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2"
         >
-          <div className="h-10 w-px bg-accent opacity-50" />
+          <div className="h-10 w-px bg-border" />
         </motion.div>
       </section>
 
@@ -172,7 +171,7 @@ export default function HomePage() {
               className="inline-flex items-center gap-8 px-10 text-[11px] font-body font-bold uppercase tracking-[0.35em] text-muted-foreground"
             >
               {brand}
-              <span className="w-1.5 h-1.5 bg-accent opacity-80 inline-block" />
+              <span className="w-1.5 h-1.5 bg-border inline-block" />
             </span>
           ))}
         </div>
@@ -185,7 +184,7 @@ export default function HomePage() {
       >
         <div className="flex items-end justify-between mb-16">
           <div>
-            <p className="text-[9px] font-body font-bold uppercase tracking-[0.4em] text-accent mb-4">
+            <p className="text-[9px] font-body font-bold uppercase tracking-[0.4em] text-muted-foreground mb-4">
               Handpicked
             </p>
             <h2 className="font-display font-black uppercase text-5xl md:text-6xl leading-[0.9] tracking-tighter text-foreground">
@@ -196,7 +195,7 @@ export default function HomePage() {
           <Link
             to="/products"
             search={{ category: undefined }}
-            className="hidden sm:inline-flex items-center gap-2 text-[11px] font-body font-semibold uppercase tracking-[0.15em] text-muted-foreground hover:text-accent transition-colors"
+            className="hidden sm:inline-flex items-center gap-2 text-[11px] font-body font-semibold uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors"
             data-ocid="featured.link"
           >
             View All <ArrowRight className="w-4 h-4" />
@@ -239,7 +238,7 @@ export default function HomePage() {
           <Link
             to="/products"
             search={{ category: undefined }}
-            className="inline-flex items-center gap-2 border border-border text-muted-foreground font-body font-semibold uppercase tracking-[0.18em] text-[11px] px-10 py-4 hover:border-accent hover:text-accent transition-all"
+            className="inline-flex items-center gap-2 border border-border text-muted-foreground font-body font-semibold uppercase tracking-[0.18em] text-[11px] px-10 py-4 hover:border-foreground hover:text-foreground transition-all"
             data-ocid="featured.link"
           >
             View Full Collection <ArrowRight className="w-4 h-4" />
